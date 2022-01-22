@@ -14,7 +14,6 @@ Front-End :
 
 Back-End :
 * Node.JS / Express.JS
-* TypeScript
 
 Base de données :
 * MySQL (Script sur demande)
@@ -29,5 +28,5 @@ Front-End :
 Back-End :
 * App.js : Routeur de l'application, ajout des redirection dans ce fichier
 * /routes : Contient toutes les routes de l'applications 
-* /middlewares : Contient les middlewares tel que l'authenfication des token 
+* /middlewares : Contient les middlewares tel que l'authentification des token 
 * /controllers : Contient les controllers de l'app regroupés par type d'objet 
