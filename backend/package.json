@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.2",
-    "mysql2": "^2.3.3"
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.3",
+    "uuid": "^8.3.2"
   }
 }
