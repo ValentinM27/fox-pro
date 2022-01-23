@@ -51,3 +51,37 @@ exports.register = (req, res) => {
         else res.status(403).json({message : "Ce mail est déjà utilisé"});
     })
 }
+
+/**
+ * Permet à un utilisateur de se connecter
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.login = (req, res) => {
+    const {EMAIL, PASSWORD_P} = req.body;
+
+    connection.query(`SELECT IDPERSON, PASSWORD_P FROM PERSON WHERE EMAIL = "${EMAIL}"`, (err, results) => {
+        
+        if(results.length !== 0){
+            bcrypt.compare(PASSWORD_P, results[0].PASSWORD_P)
+            .then( valid => {
+                if(!valid){
+                    res.status(401).json({message : "Mot de passe incorrect"});
+                } else {
+                    res.status(200).json({
+                        message : "Connexion réussie",
+                        token : jwt.sign(
+                            {IDPERSON : results[0].IDPERSON}, 
+                            JWT_SECRET_TOKEN_,
+                            {expiresIn : '24h'}
+                        )
+                    })
+                }
+            })
+        } 
+        
+        else if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+        else res.status(404).json({message : "L'utilisateur n'existe pas"})
+    })
+}

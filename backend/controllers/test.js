@@ -7,3 +7,6 @@ exports.test = (req,res) => {
     res.status(200).json({message : "The API is working well !"});
 }
 
+exports.testAuth = (req,res) => {
+    res.status(200).json({message : "Auth module is working well !"});
+}

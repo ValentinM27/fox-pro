@@ -12,5 +12,6 @@ router.get('/', personCtrl.test);
 
 // POST
 router.post('/register', testPassword, uuidGenerator,personCtrl.register);
+router.post('/login', personCtrl.login);
 
 module.exports = router;
