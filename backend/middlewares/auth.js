@@ -14,8 +14,6 @@ const connection = require("../database/db");
         const decodedToken = jwt.verify(token, JWT_SECRET_TOKEN_);
         const IDPERSON = decodedToken.IDPERSON;
 
-        console.log(IDPERSON)
-
         const sql = `SELECT IDPERSON FROM PERSON WHERE IDPERSON = "${IDPERSON}"`;
 
         connection.query(sql, function(err, result){
