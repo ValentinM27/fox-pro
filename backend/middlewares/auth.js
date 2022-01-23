@@ -24,7 +24,7 @@ const connection = require("../database/db");
             } else if (err){
                 res.status(500).json({erreur : err});
             } else {
-                res.locals.idUser = result[0].IDPERSON;
+                res.locals.IDPERSON = result[0].IDPERSON;
                 next();
             }
         })

@@ -85,3 +85,17 @@ exports.login = (req, res) => {
         else res.status(404).json({message : "L'utilisateur n'existe pas"})
     })
 }
+
+exports.retrieveDate = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+
+    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, BIRTHDAY_DATE, GENDER_P FROM PERSON WHERE IDPERSON = "${IDPERSON}"`;
+
+    connection.query(sql, (err, results) => {
+        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+        else if(results === undefined || results.length === 0) res.status(404).json({message : "Utilisateur inconnu"})
+
+        else res.status(200).json({PERSON : results});
+    })
+}

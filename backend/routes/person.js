@@ -7,8 +7,11 @@ const personCtrl = require('../controllers/person');
 // Import des middlewares
 const uuidGenerator = require('../middlewares/uuidGenerator');
 const testPassword = require('../middlewares/testPassword');
+const auth = require('../middlewares/auth');
+
 // GET
 router.get('/', personCtrl.test);
+router.get('/user', auth, personCtrl.retrieveDate);
 
 // POST
 router.post('/register', testPassword, uuidGenerator,personCtrl.register);
