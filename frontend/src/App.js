@@ -1,13 +1,19 @@
-import logo from './logo.svg';
+import React from "react";
 import './styles/Global.scss';
+import {HashRouter, Route, Routes} from "react-router-dom";
 
 // Imports des components
-import Test from './components/Test'
+import {Main, Register} from './components'
 
 function App() {
   return (
     <div className="App">
-      <Test />
+        <HashRouter>
+            <Routes>
+                <Route path="/" exact component={() => <Main />} />
+                <Route path='/register' exact component={() => <Register />} />
+            </Routes>
+        </HashRouter>
     </div>
   );
 }
