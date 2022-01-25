@@ -11,10 +11,17 @@ const auth = require('../middlewares/auth');
 
 // GET
 router.get('/', personCtrl.test);
-router.get('/user', auth, personCtrl.retrieveDate);
+router.get('/data', auth, personCtrl.retrieveDate);
+router.get('/search/name/:name', personCtrl.searchUser);
 
 // POST
-router.post('/register', testPassword, uuidGenerator,personCtrl.register);
+router.post('/register', testPassword, uuidGenerator, personCtrl.register);
 router.post('/login', personCtrl.login);
+router.post('/password/update', testPassword, auth, personCtrl.changePassword);
+router.post('/email/update', auth, personCtrl.changeEmail);
+router.post('/update', auth, personCtrl.updateUser);
+
+// DELETE
+router.delete('/delete', auth, personCtrl.delete);
 
 module.exports = router;
