@@ -26,13 +26,15 @@ exports.register = (req, res) => {
         if(results.length === 0){
             // Test de correspondance des deux champs de mot de passe
             if(PASSWORD_P === validatePASSWORD_P){
-                // Récupération UUID
+                // Récupération UUID et ID_PERSON_
                 const IDPERSON = res.locals.IDPERSON;
+                const ID_PERSON_ = res.locals.ID_PERSON_;
+
                 // Hash du mot du passe
                 bcrypt.hash(PASSWORD_P, 10)
                 .then(hash => {
-                    const sql = (`INSERT INTO PERSON (IDPERSON,LASTNAME_P, FIRSTNAME_P, BIRTHDAY_DATE, GENDER_P, EMAIL, PASSWORD_P) 
-                    VALUE ("${IDPERSON}", "${LASTNAME_P}", "${FIRSTNAME_P}", "${BIRTHDAY_DATE}", "${GENDER_P}", "${EMAIL}", "${hash}")`);
+                    const sql = (`INSERT INTO PERSON (IDPERSON,LASTNAME_P, FIRSTNAME_P, BIRTHDAY_DATE, ID_PERSON_, GENDER_P, EMAIL, PASSWORD_P) 
+                    VALUE ("${IDPERSON}", "${LASTNAME_P}", "${FIRSTNAME_P}", "${BIRTHDAY_DATE}", "${ID_PERSON_}", "${GENDER_P}", "${EMAIL}", "${hash}")`);
 
                     connection.query(sql, function(err) {
                         if(err) res.status(200).json({message : "Erreur serveur", Erreur : err});
@@ -90,7 +92,7 @@ exports.login = (req, res) => {
 exports.retrieveDate = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
 
-    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, BIRTHDAY_DATE, GENDER_P FROM PERSON WHERE IDPERSON = "${IDPERSON}"`;
+    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, BIRTHDAY_DATE, ID_PERSON_, GENDER_P FROM PERSON WHERE IDPERSON = "${IDPERSON}"`;
 
     connection.query(sql, (err, results) => {
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
@@ -215,7 +217,7 @@ exports.searchUser = (req, res) => {
 
     const _name_Array = name.split(' ');
 
-    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, BIRTHDAY_DATE, GENDER_P
+    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, BIRTHDAY_DATE, ID_PERSON_, GENDER_P
             FROM PERSON
             WHERE LASTNAME_P = "${_name_Array[0]}" OR FIRSTNAME_P = "${_name_Array[1]}"
             OR LASTNAME_P = "${_name_Array[1]}" OR FIRSTNAME_P = "${_name_Array[0]}"`;
