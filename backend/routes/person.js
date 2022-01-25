@@ -12,6 +12,7 @@ const auth = require('../middlewares/auth');
 // GET
 router.get('/', personCtrl.test);
 router.get('/data', auth, personCtrl.retrieveDate);
+router.get('/search/name/:name', personCtrl.searchUser);
 
 // POST
 router.post('/register', testPassword, uuidGenerator, personCtrl.register);
