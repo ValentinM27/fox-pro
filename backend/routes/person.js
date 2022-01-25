@@ -17,6 +17,8 @@ router.get('/search/name/:name', personCtrl.searchUser);
 // POST
 router.post('/register', testPassword, uuidGenerator, personCtrl.register);
 router.post('/login', personCtrl.login);
+
+// UPDATE OVER POST
 router.post('/password/update', testPassword, auth, personCtrl.changePassword);
 router.post('/email/update', auth, personCtrl.changeEmail);
 router.post('/update', auth, personCtrl.updateUser);
