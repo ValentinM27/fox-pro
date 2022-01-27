@@ -15,6 +15,7 @@ router.get('/user/:user', auth, enterpriseCtrl.getByID_PERSON_);
 
 // POST
 router.post('/create', auth, enterpriseCtrl.create);
+router.post('/join', auth, enterpriseCtrl.addToEnterprise);
 
 // UPDATE OVER POST
 router.post('/update/:identerprise', auth, enterpriseCtrl.update);
