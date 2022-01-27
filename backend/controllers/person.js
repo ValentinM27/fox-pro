@@ -19,7 +19,7 @@ exports.test = (req, res) => {
  * @param {*} res 
  */
 exports.register = (req, res) => {
-    const {LASTNAME_P, FIRSTNAME_P, BIRTHDAY_DATE, GENDER_P, EMAIL, PASSWORD_P, validatePASSWORD_P} = req.body;
+    const {LASTNAME_P, FIRSTNAME_P, EMAIL, PASSWORD_P, validatePASSWORD_P} = req.body;
 
     connection.query(`SELECT IDPERSON FROM PERSON WHERE EMAIL = "${EMAIL}"`, function(err, results){
         
@@ -33,8 +33,8 @@ exports.register = (req, res) => {
                 // Hash du mot du passe
                 bcrypt.hash(PASSWORD_P, 10)
                 .then(hash => {
-                    const sql = (`INSERT INTO PERSON (IDPERSON,LASTNAME_P, FIRSTNAME_P, BIRTHDAY_DATE, ID_PERSON_, GENDER_P, EMAIL, PASSWORD_P) 
-                    VALUE ("${IDPERSON}", "${LASTNAME_P}", "${FIRSTNAME_P}", "${BIRTHDAY_DATE}", "${ID_PERSON_}", "${GENDER_P}", "${EMAIL}", "${hash}")`);
+                    const sql = (`INSERT INTO PERSON (IDPERSON,LASTNAME_P, FIRSTNAME_P, ID_PERSON_, EMAIL, PASSWORD_P) 
+                    VALUE ("${IDPERSON}", "${LASTNAME_P}", "${FIRSTNAME_P}", "${ID_PERSON_}", "${EMAIL}", "${hash}")`);
 
                     connection.query(sql, function(err) {
                         if(err) res.status(200).json({message : "Erreur serveur", Erreur : err});
@@ -92,7 +92,7 @@ exports.login = (req, res) => {
 exports.retrieveDate = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
 
-    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, BIRTHDAY_DATE, ID_PERSON_, GENDER_P FROM PERSON WHERE IDPERSON = "${IDPERSON}"`;
+    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, ID_PERSON_ FROM PERSON WHERE IDPERSON = "${IDPERSON}"`;
 
     connection.query(sql, (err, results) => {
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
@@ -175,7 +175,7 @@ exports.changeEmail = (req, res) => {
  */
 exports.updateUser = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
-    const {LASTNAME_P, FIRSTNAME_P, GENDER_P, BIRTHDAY_DATE} = req.body;
+    const {LASTNAME_P, FIRSTNAME_P} = req.body;
 
     const sql = `UPDATE PERSON SET`;
 
@@ -190,19 +190,6 @@ exports.updateUser = (req, res) => {
             if(err) res.status(500).json({message : "Erreur serveur, mise à jour FIRSTNAME", Erreur : err});
         })
     }
-
-    if(GENDER_P !== undefined) {
-        connection.query(sql+` GENDER_P = "${GENDER_P}" WHERE IDPERSON = "${IDPERSON}"`, (err) => {
-            if(err) res.status(500).json({message : "Erreur serveur, mise à jour GENDER", Erreur : err});
-        })
-    }
-
-    if(BIRTHDAY_DATE !== undefined) {
-        console.log("here")
-        connection.query(sql+` BIRTHDAY_DATE = "${BIRTHDAY_DATE}" WHERE IDPERSON = "${IDPERSON}"`, (err) => {
-            if(err) res.status(500).json({message : "Erreur serveur, mise à jour BIRTHDA_DATE", Erreur : err});  
-        })
-    } 
     
     res.status(200).json({message : "Utilisateur mis à jour"});  
 }
@@ -217,7 +204,7 @@ exports.searchUser = (req, res) => {
 
     const _name_Array = name.split(' ');
 
-    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, BIRTHDAY_DATE, ID_PERSON_, GENDER_P
+    const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, ID_PERSON_
             FROM PERSON
             WHERE LASTNAME_P = "${_name_Array[0]}" OR FIRSTNAME_P = "${_name_Array[1]}"
             OR LASTNAME_P = "${_name_Array[1]}" OR FIRSTNAME_P = "${_name_Array[0]}"`;
