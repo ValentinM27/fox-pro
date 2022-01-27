@@ -5,6 +5,7 @@ app.use(express.json())
 //Import des routes
 const testRoutes = require('./routes/test.js');
 const personRoutes = require('./routes/person.js');
+const enterpriseRoutes = require('./routes/enterprise.js');
 
 //Set header, permet l'accès à l'API peut importe l'origine de l'appareil
 app.use((req, res, next) => {
@@ -17,5 +18,6 @@ app.use((req, res, next) => {
 //Redirection des requêtes vers les routes
 app.use('/test', testRoutes);
 app.use('/person', personRoutes);
+app.use('/enterprise', enterpriseRoutes);
 
 module.exports = app;

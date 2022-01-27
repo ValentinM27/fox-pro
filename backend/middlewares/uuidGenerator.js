@@ -9,7 +9,6 @@ const connection = require('../database/db');
  * @param {*} next 
  */
 function generateUuid(req, res, next){
-    
     const IDPERSON = uuid.v4();
 
     const sql = `SELECT IDPERSON FROM PERSON WHERE IDPERSON = "${IDPERSON}"`;
@@ -22,7 +21,6 @@ function generateUuid(req, res, next){
             next();
         } 
         else {
-            console.log("hey");
             generateUuid();
         } 
     })
