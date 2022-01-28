@@ -1,6 +1,7 @@
 import {Home, Register} from './components/index';
 import './styles/App.scss';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

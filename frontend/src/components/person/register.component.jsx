@@ -1,91 +1,145 @@
-import { useState } from "react";
-import link_api  from "../../ressources/link_api.js"
+import React, { useState, useEffect } from 'react';
 
-const Register = () => {
+function Register(){
 
-    /**
-     * Object à envoyer dans le JSON
-     */
-    const [FIRSTNAME_P, setFirstname] = useState('');
-    const [LASTNAME_P, setLastname] = useState('');
-    const [EMAIL, setEmail] = useState('');
-    const [PASSWORD_P, setPassword] = useState('');
-    const [validatePASSWORD_P, setValidatePassword] = useState('');
+  const initValue = {firstname : "", lastname : "", email : "", password : "", validate_password : ""};
+  const [formValues, setFormValues] = useState(initValue);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
 
-    /**
-     * Permet d'envoyer le contenu du formulaire à l'API
-     * @param {*} e 
-     */
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
+  const handleChange = (event) => {
+    const {name, value} = event.target;
+    setFormValues({...formValues, [name]: value});
+    console.log(formValues);
+  }
 
-        const person = {FIRSTNAME_P, LASTNAME_P, EMAIL, PASSWORD_P, validatePASSWORD_P};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmit(true)
+  }
 
-        console.log(link_api + 'person/register');
-        
-        fetch(link_api + 'person/register', {
-            method: 'POST',
-            headers : { "Content-Type": "application/json" },
-            body : JSON.stringify(person)
-        }) 
-        .then ((response) => {
-            if(response.status === 200) {
-                console.log("Done!");
-                console.log(response);
-            }
-            else {
-                console.log("Error");
-                response.json().then((data) => {
-                    console.log(data);
-                });
-            }
-        })
+  useEffect(() => {
+    if(Object.keys(formErrors).length === 0 && isSubmit === true) {
+      console.log(formValues);
     }
-    
-    return (
-        <div ClassName="register">
-            <h2>Création de votre compte Fox'Pro</h2>
-            <form onSubmit={handleOnSubmit}>
+  }, [formErrors]);
 
-                <label>Prénom</label>
+  const validate = (value) => {
+    const errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+    if(!value.firstname){errors.firstname = "Le prénom est requis"}
+    if(!value.lastname){errors.lastname = "Le nom est requis"}
+    if(!value.email){errors.email = "Un email est requis"}
+    if(!value.password){errors.password = "Un mot de passe est requis"}
+    if(!value.validate_password){errors.validate_password = "Vous devez valider votre mot de passe"}
+    if(value.password !== value.validate_password){errors.validate_password = "Validation incorrect"}
+
+    return errors;
+  }
+
+  return (
+      <div className="container">
+          <h1 className="col-md-12 text-center">Création de votre compte Fox'Pro</h1>
+
+          <form onSubmit={handleSubmit} className="form">
+              
+              <div className="form-group">
+                <label htmlFor="firstname" className="col-sm-2 control-label">Prénom</label>
                 <input 
-                    type="text" 
-                    required value={FIRSTNAME_P} 
-                    onChange={(e) => setFirstname(e.target.value)} 
+                  type="text" 
+                  name="firstname" 
+                  className="form-control" 
+                  value={ formValues.firstname }
+                  onChange={ handleChange }
                 />
+              </div>
+              {formErrors.firstname ? 
+                (<div class="alert alert-danger" role="alert">
+                  {formErrors.firstname}
+                </div>) : <br />
+              }
 
-                <label>Nom</label>
+              <div className="form-group">
+                <label htmlFor="lastname" className="col-sm-2 control-label">Nom</label>
                 <input 
-                    type="text"
-                    required value={LASTNAME_P}
-                    onChange={(e) => setLastname(e.target.value)}
+                  type="text" 
+                  name="lastname" 
+                  className="form-control" 
+                  value={ formValues.lastname } 
+                  onChange={ handleChange }
                 />
+              </div>
+              {formErrors.lastname ? 
+                (<div class="alert alert-danger" role="alert">
+                  {formErrors.lastname}
+                </div>) : <br />
+              }
 
-                <label>Email</label>
+              <div className="form-group">
+                <label htmlFor="email" className="col-sm-2 control-label">Email</label>
                 <input 
-                    type="email"
-                    required value={EMAIL}
-                    onChange={(e) => setEmail(e.target.value)}
+                  type="email" 
+                  name="email" 
+                  className="form-control" 
+                  value={ formValues.email } 
+                  onChange={ handleChange }
                 />
+              </div>
 
-                <label>Mot de passe</label>
+              {formErrors.email ? 
+                (<div class="alert alert-danger" role="alert">
+                  {formErrors.email}
+                </div>) : <br />
+              }
+              
+              <div className="form-group">
+                <label htmlFor="password" className="col-sm-2 control-label">Mot de passe</label>
                 <input 
-                    type="password"
-                    required value={PASSWORD_P}
-                    onChange={(e) => setPassword(e.target.value)}
+                  type="password" 
+                  name="password" 
+                  className="form-control" 
+                  value={ formValues.password }
+                  onChange={ handleChange }
                 />
+              </div>
 
-                <label>Valider mot de passe</label>
+              {formErrors.password ? 
+                (<div class="alert alert-danger" role="alert">
+                  {formErrors.password}
+                </div>) : <br />
+              } 
+              
+              <div className="form-group">
+                <label htmlFor="validate_password" className="col-sm-5 control-label">Valider votre mot de passe</label>
                 <input 
-                    type="password"
-                    required value={validatePASSWORD_P}
-                    onChange={(e) => setValidatePassword(e.target.value)}
+                  type="password"
+                  name="validate_password" 
+                  className="form-control" 
+                  value={ formValues.validate_password }
+                  onChange={ handleChange } 
                 />
+              </div> 
 
-                <button>Créer un compte</button>
-            </form>
-        </div>
-    )
-}
+              {formErrors.validate_password ? 
+                (<div class="alert alert-danger" role="alert">
+                  {formErrors.validate_password}
+                </div>) : <br />
+              }  
+              
+              <hr />
 
-export default Register;
+              <div className="col-md-12 text-center">
+                <div className="form-group">
+                  <button type="submit" className="btn btn-primary">Créer</button>
+                </div>
+              </div>
+              
+          </form>
+      </div>
+    ) 
+  }
+
+  export default Register;
+
