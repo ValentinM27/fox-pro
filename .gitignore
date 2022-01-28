@@ -1,4 +1,6 @@
 /node_modules/
 /backend/node_modules/
 /backend/ressources/
+/frontend/node_modules/
+/frontend/ressources/
 .DS_Store

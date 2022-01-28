@@ -16,8 +16,8 @@ app.use((req, res, next) => {
 });
 
 //Redirection des requêtes vers les routes
-app.use('/test', testRoutes);
-app.use('/person', personRoutes);
-app.use('/enterprise', enterpriseRoutes);
+app.use('/api/test', testRoutes);
+app.use('/api/person', personRoutes);
+app.use('/api/enterprise', enterpriseRoutes);
 
 module.exports = app;

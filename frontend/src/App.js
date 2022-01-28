@@ -1,19 +1,18 @@
-import React from "react";
-import './styles/Global.scss';
-import {HashRouter, Route, Routes} from "react-router-dom";
-
-// Imports des components
-import {Main, Register} from './components'
+import {Home, Register, Login} from './components/index';
+import './styles/App.scss';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
     <div className="App">
-        <HashRouter>
-            <Routes>
-                <Route path="/" exact component={() => <Main />} />
-                <Route path='/register' exact component={() => <Register />} />
-            </Routes>
-        </HashRouter>
+      <Router>
+        <Routes>
+          <Route path='/' exact element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
     </div>
   );
 }

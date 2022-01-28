@@ -1,4 +1,3 @@
-export { default as Main } from './Main';
-
-// Register
-export {default as Register } from './register/Register'
+export { default as Home } from './Home';
+export { default as Register } from './person/register.component.jsx';
+export { default as Login } from './person/login.component.jsx';

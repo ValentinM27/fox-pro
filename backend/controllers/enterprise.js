@@ -21,7 +21,7 @@ exports.create = (req, res) => {
     
     connection.query(sql, (err) => {
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
-
+        
         else res.status(200).json({message : "Entreprise créée !"});
     })
 }
@@ -157,6 +157,59 @@ exports.delete = (req, res) => {
                 if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
                 else res.status(200).json({message : "Entreprise supprimée !"});
+            })
+        }
+    })
+}
+
+/**
+ * Permet à un product manager ou admin de l'entreprise d'ajouter des employés à l'entreprise
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.addToEnterprise = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+    const IDENTERPRISE = req.body.IDENTERPRISE;
+
+    const sql =  `SELECT IS_PM, IS_ADMIN FROM IS_PART_OF WHERE IDPERSON = "${IDPERSON}" AND IDENTERPRISE="${IDENTERPRISE}"`;
+
+    // Vérification du statut de la personne précédant à l'opération
+    connection.query(sql, (err, result) => {
+        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+        
+        else if (result === undefined || result.length === 0) res.status(403).json({message : "Vous ne faite pas partie de cette entreprise !"});
+
+        else if (result[0].IS_PM === 0 && result[0].IS_ADMIN === 0) res.status(403).json({message : "Vous devez être administrateur ou chef de projet pour ajouter des employés à l'entreprise"});
+
+        else {
+            const {ID_PERSON_, IS_PM, IS_ADMIN} = req.body;
+
+            const sql = `SELECT IDPERSON FROM PERSON WHERE ID_PERSON_ = '${ID_PERSON_}'`;
+
+            connection.query(sql, (err, result) => {
+                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                else if (result === undefined || result.length === 0) res.status(404).json({message : "Utilisateur inexistant"});
+
+                else {
+                    const sql = `SELECT IDPERSON, IDENTERPRISE FROM IS_PART_OF WHERE IDPERSON = '${IDPERSON}' AND IDENTERPRISE = '${IDENTERPRISE}'`;
+
+                    connection.query(sql, (err, result) => {
+                        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                        else if (result !== undefined && result.length !== 0) res.status(403).json({message : "La personne à ajouter est déjà membre de l'entreprise !"})
+
+                        else {
+                            const sql = `INSERT INTO IS_PART_OF (IDPERSON, IDENTERPRISE, IS_PM , IS_ADMIN) VALUES ("${result[0].IDPERSON}", "${IDENTERPRISE}", "${IS_PM}", "${IS_ADMIN}")`;
+
+                            connection.query(sql, (err) => {
+                                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                                else res.status(200).json({message : "Membre ajouté !"});
+                            })  
+                        }
+                    })
+                }
             })
         }
     })
