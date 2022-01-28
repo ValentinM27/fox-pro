@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import link_api from '../../ressources/link_api.js';
 import { useNavigate } from "react-router-dom";
 
+/**
+ * @Component : Permet à l'utilisateur de se créer un compte
+ */
 const Register = () => {
 
-  const initValue = {firstname : "", lastname : "", email : "", password : "", validate_password : "", checkbox : ""};
+  const initValue = {firstname : "", lastname : "", email : "", password : "", validate_password : "", checkbox : false};
   const [formValues, setFormValues] = useState(initValue);
   const [formErrors, setFormErrors] = useState({});
 
@@ -34,8 +37,6 @@ const Register = () => {
     // Si il n'y a pas d'erreurs dans la saisie du formulaire, on procéde à l'envoi à l'API
     if(Object.keys(formErrors).length === 0 && isSubmit === true) {
       const person = {FIRSTNAME_P : formValues.firstname, LASTNAME_P : formValues.lastname, EMAIL : formValues.email, PASSWORD_P : formValues.password, validatePASSWORD_P : formValues.validate_password};
-
-        console.log(link_api + 'person/register');
         
         fetch(link_api + 'person/register', {
             method: 'POST',
@@ -44,7 +45,7 @@ const Register = () => {
         }) 
         .then ((response) => {
             if(response.status === 200) {
-                navigate('/');
+                navigate('/login');
             }
             else { 
                 response.json().then((data) => {
@@ -56,7 +57,7 @@ const Register = () => {
   }
 
   /**
-   * Gestion de l'afficahge des erreurs
+   * Gestion de l'affichage des erreurs
    */
   useEffect(() => {}, [formErrors]);
 
@@ -77,10 +78,10 @@ const Register = () => {
     else if(!mail_regex.test(value.email)){errors.email = "Entrez une strucuture de mail valide"}
 
     if(!value.password){errors.password = "Un mot de passe est requis"}
-    else if(value.password.length < 8 || value.password.length > 40){errors.password = "Le mot de passe doit faire entre 8 et 40 caractères"}
+    else if(value.password.length < 8 || value.password.length > 40){errors.password = "Le mot de passe doit faire entre 8 et 40 caractères"}
 
     if(!value.validate_password){errors.validate_password = "Vous devez valider votre mot de passe"}
-    else if(value.password !== value.validate_password){errors.validate_password = "Les deux mots de passe différent"}
+    else if(value.password !== value.validate_password){errors.validate_password = "Les deux mots de passe sont différents"}
     
     if(!value.checkbox){errors.checkbox = "Vous devez accepter la politique de confidentialité"}
 
@@ -93,10 +94,10 @@ const Register = () => {
           
           {/* Gestion de l'affichage des erreurs */}
           {apiErrors ? 
-                (<div className="alert alert-danger" role="alert">
-                  {apiErrors}
-                </div>) : <br />
-              }
+            (<div className="alert alert-danger" role="alert">
+              {apiErrors}
+            </div>) : <br />
+          }
             
           <form onSubmit={handleSubmit} className="form">
               
@@ -192,7 +193,7 @@ const Register = () => {
                   class="form-check-input" 
                   type="checkbox" 
                   value={ formValues.checkbox }
-                  onChange={ handleChange } 
+                  onChange={ () => formValues.checkbox = (!formValues.checkbox)} 
                   id="check-politique" 
                 />
                 <label class="form-check-label" for="check-politique">

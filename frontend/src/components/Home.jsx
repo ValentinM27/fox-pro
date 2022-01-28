@@ -5,6 +5,8 @@ export default class Home extends Component {
     return (
         <div>
             Welcome to Fox'Pro !
+
+            {localStorage.getItem("token")}
         </div>
     )
   }
