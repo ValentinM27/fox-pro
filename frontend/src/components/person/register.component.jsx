@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import link_api from '../../ressources/link_api.js';
+import { useNavigate } from "react-router-dom";
 
 function Register(){
 
@@ -6,35 +8,77 @@ function Register(){
   const [formValues, setFormValues] = useState(initValue);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const navigate = useNavigate();
 
+  /**
+   * Permet de gérer les changements dans les champs du formulaire
+   * @param {*} event 
+   */
   const handleChange = (event) => {
     const {name, value} = event.target;
     setFormValues({...formValues, [name]: value});
-    console.log(formValues);
   }
 
+  /**
+   * Permet de gérer l'envoi du formulaire
+   * @param {*} event 
+   */
   const handleSubmit = (event) => {
     event.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmit(true)
+
+    if(Object.keys(formErrors).length === 0 && isSubmit === true) {
+      const person = {FIRSTNAME_P : formValues.firstname, LASTNAME_P : formValues.lastname, EMAIL : formValues.email, PASSWORD_P : formValues.password, validatePASSWORD_P : formValues.validate_password};
+
+        console.log(link_api + 'person/register');
+        
+        fetch(link_api + 'person/register', {
+            method: 'POST',
+            headers : { "Content-Type": "application/json" },
+            body : JSON.stringify(person)
+        }) 
+        .then ((response) => {
+            if(response.status === 200) {
+                navigate('/');
+            }
+            else {
+                console.log("Error");
+                response.json().then((data) => {
+                    console.log(data);
+                });
+            }
+        })
+    }
   }
 
-  useEffect(() => {
-    if(Object.keys(formErrors).length === 0 && isSubmit === true) {
-      console.log(formValues);
-    }
-  }, [formErrors]);
+  /**
+   * Gestion de l'afficahge des erreurs
+   */
+  useEffect(() => {}, [formErrors]);
 
+  /**
+   * Vérification des contraintes sur les champs et créations des erreurs
+   * @param {*} value 
+   * @returns 
+   */
   const validate = (value) => {
     const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    const mail_regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
     if(!value.firstname){errors.firstname = "Le prénom est requis"}
+    
     if(!value.lastname){errors.lastname = "Le nom est requis"}
+    
     if(!value.email){errors.email = "Un email est requis"}
+    else if(!mail_regex.test(value.email)){errors.email = "Entrez une strucuture de mail valide"}
+
     if(!value.password){errors.password = "Un mot de passe est requis"}
+    else if(value.password.length < 8 || value.password.length > 40){errors.password = "Le mot de passe doit faire entre 8 et 40 caractères"}
+
     if(!value.validate_password){errors.validate_password = "Vous devez valider votre mot de passe"}
-    if(value.password !== value.validate_password){errors.validate_password = "Validation incorrect"}
+    else if(value.password !== value.validate_password){errors.validate_password = "Les deux mots de passe différent"}
+    
 
     return errors;
   }
@@ -55,8 +99,9 @@ function Register(){
                   onChange={ handleChange }
                 />
               </div>
+              {/* Gestion de l'affichage des erreurs */}
               {formErrors.firstname ? 
-                (<div class="alert alert-danger" role="alert">
+                (<div className="alert alert-danger" role="alert">
                   {formErrors.firstname}
                 </div>) : <br />
               }
@@ -71,8 +116,9 @@ function Register(){
                   onChange={ handleChange }
                 />
               </div>
+              {/* Gestion de l'affichage des erreurs */}
               {formErrors.lastname ? 
-                (<div class="alert alert-danger" role="alert">
+                (<div className="alert alert-danger" role="alert">
                   {formErrors.lastname}
                 </div>) : <br />
               }
@@ -87,9 +133,9 @@ function Register(){
                   onChange={ handleChange }
                 />
               </div>
-
+              {/* Gestion de l'affichage des erreurs */}
               {formErrors.email ? 
-                (<div class="alert alert-danger" role="alert">
+                (<div className="alert alert-danger" role="alert">
                   {formErrors.email}
                 </div>) : <br />
               }
@@ -104,9 +150,9 @@ function Register(){
                   onChange={ handleChange }
                 />
               </div>
-
+              {/* Gestion de l'affichage des erreurs */}
               {formErrors.password ? 
-                (<div class="alert alert-danger" role="alert">
+                (<div className="alert alert-danger" role="alert">
                   {formErrors.password}
                 </div>) : <br />
               } 
@@ -121,9 +167,9 @@ function Register(){
                   onChange={ handleChange } 
                 />
               </div> 
-
+              {/* Gestion de l'affichage des erreurs */}
               {formErrors.validate_password ? 
-                (<div class="alert alert-danger" role="alert">
+                (<div className="alert alert-danger" role="alert">
                   {formErrors.validate_password}
                 </div>) : <br />
               }  
