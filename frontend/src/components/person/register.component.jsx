@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import link_api from '../../ressources/link_api.js';
 import { useNavigate } from "react-router-dom";
 
-function Register(){
+const Register = () => {
 
-  const initValue = {firstname : "", lastname : "", email : "", password : "", validate_password : ""};
+  const initValue = {firstname : "", lastname : "", email : "", password : "", validate_password : "", checkbox : ""};
   const [formValues, setFormValues] = useState(initValue);
   const [formErrors, setFormErrors] = useState({});
+
   const [isSubmit, setIsSubmit] = useState(false);
+  const [apiErrors, setApiErrors] = useState('');
+
   const navigate = useNavigate();
 
   /**
@@ -28,6 +31,7 @@ function Register(){
     setFormErrors(validate(formValues));
     setIsSubmit(true)
 
+    // Si il n'y a pas d'erreurs dans la saisie du formulaire, on procéde à l'envoi à l'API
     if(Object.keys(formErrors).length === 0 && isSubmit === true) {
       const person = {FIRSTNAME_P : formValues.firstname, LASTNAME_P : formValues.lastname, EMAIL : formValues.email, PASSWORD_P : formValues.password, validatePASSWORD_P : formValues.validate_password};
 
@@ -42,10 +46,9 @@ function Register(){
             if(response.status === 200) {
                 navigate('/');
             }
-            else {
-                console.log("Error");
+            else { 
                 response.json().then((data) => {
-                    console.log(data);
+                    setApiErrors(data.message);
                 });
             }
         })
@@ -79,6 +82,7 @@ function Register(){
     if(!value.validate_password){errors.validate_password = "Vous devez valider votre mot de passe"}
     else if(value.password !== value.validate_password){errors.validate_password = "Les deux mots de passe différent"}
     
+    if(!value.checkbox){errors.checkbox = "Vous devez accepter la politique de confidentialité"}
 
     return errors;
   }
@@ -86,7 +90,14 @@ function Register(){
   return (
       <div className="container">
           <h1 className="col-md-12 text-center">Création de votre compte Fox'Pro</h1>
-
+          
+          {/* Gestion de l'affichage des erreurs */}
+          {apiErrors ? 
+                (<div className="alert alert-danger" role="alert">
+                  {apiErrors}
+                </div>) : <br />
+              }
+            
           <form onSubmit={handleSubmit} className="form">
               
               <div className="form-group">
@@ -175,6 +186,25 @@ function Register(){
               }  
               
               <hr />
+
+              <div class="form-check">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  value={ formValues.checkbox }
+                  onChange={ handleChange } 
+                  id="check-politique" 
+                />
+                <label class="form-check-label" for="check-politique">
+                  J'accepte la politique de confidentialité
+                </label>
+              </div>
+              {/* Gestion de l'affichage des erreurs */}
+              {formErrors.checkbox ? 
+                (<div className="alert alert-danger" role="alert">
+                  {formErrors.checkbox}
+                </div>) : <br />
+              }  
 
               <div className="col-md-12 text-center">
                 <div className="form-group">
