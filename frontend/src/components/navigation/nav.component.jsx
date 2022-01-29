@@ -1,7 +1,7 @@
 import React  from 'react';
 import { useNavigate } from "react-router-dom";
-
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
+import PersonService from '../../services/person.service.js'
 
 import logo_nav from '../../images/LOGO2.png'
 
@@ -14,14 +14,13 @@ const Navigation = () => {
 
     /**
      * Permet de gérer la déconnexion
-     * @todo : add user.services.js
      */
     const handleLogout = () => {
-        if(localStorage.getItem('token') !== undefined) {
-            localStorage.setItem('token', undefined);
+        const _status = PersonService.logout();
+        if(_status) {
             navigate('/');
             window.location.reload(false);
-        }
+        } 
     }
 
     return (
@@ -42,7 +41,7 @@ const Navigation = () => {
 
                 <Navbar.Collapse id="basic-navbar-nav">
                     
-                    {localStorage.getItem('token') !== "undefined" ? 
+                    {PersonService.isAuthenticated() ? 
                     /* Dans le cas d'un utilisateur connecté */
                     ( 
                         <Nav className="ms-auto float-left">
