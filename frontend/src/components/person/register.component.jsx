@@ -188,15 +188,15 @@ const Register = () => {
               
               <hr />
 
-              <div class="form-check">
+              <div className="form-check">
                 <input 
-                  class="form-check-input" 
+                  className="form-check-input" 
                   type="checkbox" 
                   value={ formValues.checkbox }
                   onChange={ () => formValues.checkbox = (!formValues.checkbox)} 
                   id="check-politique" 
                 />
-                <label class="form-check-label" for="check-politique">
+                <label className="form-check-label" htmlFor="check-politique">
                   J'accepte la politique de confidentialité
                 </label>
               </div>
