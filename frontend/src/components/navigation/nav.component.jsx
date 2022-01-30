@@ -1,6 +1,6 @@
 import React  from 'react';
 import { useNavigate } from "react-router-dom";
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, NavDropdown } from 'react-bootstrap';
 import PersonService from '../../services/person.service.js'
 
 import logo_nav from '../../images/LOGO2.png'
@@ -45,9 +45,21 @@ const Navigation = () => {
                     /* Dans le cas d'un utilisateur connecté */
                     ( 
                         <Nav className="ms-auto float-left">
-                            <Nav.Link href="/projects">Mes projets</Nav.Link>
-                            <Nav.Link href="/enterprise">Mes entreprises</Nav.Link>
+
+                            <Nav.Link href="/search">Rechercher</Nav.Link>
+
+                            <NavDropdown title="Mes projets" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="/project">Consulter mes projets</NavDropdown.Item>
+                                <NavDropdown.Item href="/project/create">Créer un nouveau projet</NavDropdown.Item>
+                            </NavDropdown>
+
+                            <NavDropdown title="Mes entreprises" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="/enterprise">Voir mes entreprises</NavDropdown.Item>
+                                <NavDropdown.Item href="/enterprise/create">Créer une nouvelle entreprise</NavDropdown.Item>
+                            </NavDropdown>
+
                             <Nav.Link href="/profil">Mon profil</Nav.Link>
+
                             <Button onClick={handleLogout} variant="danger">Déconnexion</Button>{' '}
                         </Nav>                       
                     ) 
