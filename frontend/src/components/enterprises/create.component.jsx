@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import link_api from '../../ressources/link_api.js';
-import { useNavigate } from "react-router-dom";
+import PersonService from '../../services/person.service.js';
 
 /**
-* @Component : Permet à l'utilisateur de se connecter 
-*/
-const Login = () => {
-    const initValue = {email : "", password : ""};
+ * Permet de créer une entreprise
+ */
+const Create_enterprise = () => {
+    
+    const initValue = {name: "", description: ""};
     const [formValues, setFormValues] = useState(initValue);
     const [formErrors, setFormErrors] = useState({});
-    
+
     const [apiErrors, setApiErrors] = useState('');
 
     const navigate = useNavigate();
 
     /**
-     * Permet de gérer les changements dans les champs du formulaire
+     * Permet de gérer les chnagements dans les champs du formulaire
      * @param {*} event 
      */
     const handleChange = (event) => {
@@ -31,21 +34,18 @@ const Login = () => {
         event.preventDefault();
         setFormErrors(validate(formValues));
 
-        // Si il n'y a pas d'erreurs dans la saisie du formulaire, on procéde à l'envoi à l'API
+        // Si il n'y a pas d'erreurs dans la saisie du formulaire, on envoi à l'API
         if(Object.keys(formErrors).length === 0){
-            const person = {EMAIL : formValues.email, PASSWORD_P : formValues.password};
+            const enterprise = {NAME_ENTERPRISE : formValues.name, DESCRIPTION_ENT : formValues.description};
 
-            fetch(link_api + 'person/login', {
+            fetch(link_api + 'enterprise/create', {
                 method : 'POST',
-                headers : { "Content-Type": "application/json" },
-                body : JSON.stringify(person)
+                headers : { 'Content-Type': 'application/json', authorization : PersonService.getToken() },
+                body : JSON.stringify(enterprise)
             })
-            .then ((response) => {
+            .then(response => {
                 if(response.status === 200) {
-                    response.json().then((data) => {
-                        localStorage.setItem("token", data.token);
-                        navigate('/');
-                    })
+                    navigate('/enterprise');
                 }
                 else {
                     response.json().then((data) => {
@@ -53,7 +53,7 @@ const Login = () => {
                     })
                 }
             })
-        } 
+        }
     }
 
     /**
@@ -62,25 +62,23 @@ const Login = () => {
     useEffect(() => {}, [formErrors]);
 
     /**
-     * Permet de valider l'intégrités des données du formulaire
+     * Permet de vérifier l'intégrités des données du formulaire
      * @param {*} value 
      */
     const validate = (value) => {
         const errors = {};
-        const mail_regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
-        if(!value.email){errors.email = "Le mail est requis"}
-        else if(!mail_regex.test(value.email)){errors.email = "Veuillez entrer une strucuture de mail correcte"}
+        if(!value.name){errors.name = "Veuillez entrer un nom  pour votre entreprise"}
+        else if (value.name.length > 50 || value.name.length < 2){errors.name = "Le nom doit être compris entre 2 et 50 caractères"};
 
-        if(!value.password){errors.password = "Veuillez saisir votre mot de passe"}
-        else if(value.password.length < 8 || value.password.length > 40){errors.password = "Le mot de passe fait entre 8 et 40 caractères"}
+        if(value.description && value.description.length > 255){errors.description = "La description doit faire moins de 255 caractères"};
 
         return errors;
     }
 
     return (
         <div className="container">
-            <h1 className="col-md-12 text-center">Connexion à votre compte Fox'Pro</h1>
+            <h1 className="col-md-12 text-center">Création d'une entreprise</h1>
 
             {/* Gestion de l'affichage des erreurs */}
             {apiErrors ? 
@@ -91,37 +89,37 @@ const Login = () => {
 
             <form onSubmit={handleSubmit} className="form">
 
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
+            <div className="form-group">
+                    <label htmlFor="email">Nom de l'entreprise</label>
                     <input 
-                        type="email" 
-                        name="email"
+                        type="text" 
+                        name="name"
                         className="form-control" 
-                        value={ formValues.email }
+                        value={ formValues.name }
                         onChange={ handleChange }
                     />
                 </div>
                 {/* Gestion de l'affichage des erreurs */}
-                {formErrors.email ? 
+                {formErrors.name ? 
                     (<div className="alert alert-danger" role="alert">
-                    {formErrors.email}
+                    {formErrors.name}
                     </div>) : <br />
                 }
 
                 <div className="form-group">
-                    <label htmlFor="password">Mot de passe</label>
+                    <label htmlFor="password">Description</label>
                     <input 
-                        type="password" 
-                        name="password"
+                        type="text" 
+                        name="description"
                         className="form-control" 
-                        value={ formValues.password }
+                        value={ formValues.description }
                         onChange={ handleChange }
                     />
                 </div>
                 {/* Gestion de l'affichage des erreurs */}
-                {formErrors.password ? 
+                {formErrors.description ? 
                     (<div className="alert alert-danger" role="alert">
-                    {formErrors.password}
+                    {formErrors.description}
                     </div>) : <br />
                 }
 
@@ -129,8 +127,8 @@ const Login = () => {
 
                 <div className="col-md-12 text-center">
                     <div className="form-group">
-                        <button type="submit" className="btn btn-primary">Me connecter</button>
-                    </div>      
+                        <button type="submit" className="btn btn-primary">Créer</button>
+                    </div>
                 </div>
 
             </form>
@@ -138,4 +136,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Create_enterprise;

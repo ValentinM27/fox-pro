@@ -11,7 +11,6 @@ const Register = () => {
   const [formValues, setFormValues] = useState(initValue);
   const [formErrors, setFormErrors] = useState({});
 
-  const [isSubmit, setIsSubmit] = useState(false);
   const [apiErrors, setApiErrors] = useState('');
 
   const navigate = useNavigate();
@@ -32,10 +31,9 @@ const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setFormErrors(validate(formValues));
-    setIsSubmit(true)
 
     // Si il n'y a pas d'erreurs dans la saisie du formulaire, on procéde à l'envoi à l'API
-    if(Object.keys(formErrors).length === 0 && isSubmit === true) {
+    if(Object.keys(formErrors).length === 0) {
       const person = {FIRSTNAME_P : formValues.firstname, LASTNAME_P : formValues.lastname, EMAIL : formValues.email, PASSWORD_P : formValues.password, validatePASSWORD_P : formValues.validate_password};
         
         fetch(link_api + 'person/register', {
@@ -188,15 +186,15 @@ const Register = () => {
               
               <hr />
 
-              <div class="form-check">
+              <div className="form-check">
                 <input 
-                  class="form-check-input" 
+                  className="form-check-input" 
                   type="checkbox" 
                   value={ formValues.checkbox }
                   onChange={ () => formValues.checkbox = (!formValues.checkbox)} 
                   id="check-politique" 
                 />
-                <label class="form-check-label" for="check-politique">
+                <label className="form-check-label" htmlFor="check-politique">
                   J'accepte la politique de confidentialité
                 </label>
               </div>

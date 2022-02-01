@@ -8,5 +8,5 @@ exports.test = (req,res) => {
 }
 
 exports.testAuth = (req,res) => {
-    res.status(200).json({message : "Auth module is working well !"});
+    res.status(200).json({message : "Auth module is working well !", id : res.locals.IDPERSON});
 }

@@ -9,9 +9,9 @@ const auth = require('../middlewares/auth');
 
 // GET
 router.get('/test', enterpriseCtrl.test);
-router.get('/:identerprise', enterpriseCtrl.getByID);
+router.get('/id/:identerprise', enterpriseCtrl.getByID);
 router.get('/retrieve', auth, enterpriseCtrl.getByCurrentUser);
-router.get('/user/:user', auth, enterpriseCtrl.getByID_PERSON_);
+router.get('/user/:user', enterpriseCtrl.getByID_PERSON_);
 
 // POST
 router.post('/create', auth, enterpriseCtrl.create);

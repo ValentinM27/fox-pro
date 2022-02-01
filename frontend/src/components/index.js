@@ -1,3 +1,8 @@
 export { default as Home } from './Home';
 export { default as Register } from './person/register.component.jsx';
 export { default as Login } from './person/login.component.jsx';
+export { default as Navigation } from './navigation/nav.component.jsx';
+export { default as Notfound } from './notfound.jsx';
+export { default as Profil } from './person/profil.component.jsx';
+export { default as CreateEnterprise } from './enterprises/create.component.jsx';
+export { default as ConsultEnterprise } from './enterprises/consult.component.jsx';
