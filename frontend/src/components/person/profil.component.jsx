@@ -4,7 +4,7 @@ import PersonService from '../../services/person.service.js';
 import logo_profil from '../../images/profil_logo.jpg';
 
 /**
- * Component du profil de l'utilisateur
+ * @Component du profil de l'utilisateur
  */
 export default class Profil extends Component {
     state = {
@@ -13,7 +13,7 @@ export default class Profil extends Component {
         lastname: "",
         email: "",
         login: ""
-        }
+    }
 
     async componentDidMount() {
         const user_data = await PersonService.getPersonData();
@@ -32,7 +32,7 @@ export default class Profil extends Component {
         return (
             <div className="col-md-12 text-center">
                 {this.state.loading ? 
-                (<div class="spinner-border text-warning" role="status"></div>) 
+                (<div className="spinner-border text-warning" role="status"></div>) 
                 :  
                 (<div className="container mt-4 mb-4 p-3 d-flex justify-content-center">
                     <div className="card p-4">
