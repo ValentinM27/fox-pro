@@ -9,9 +9,9 @@ import link_api from '../../ressources/link_api';
 const Consult_Enterprise = () => {
     const [loading, setLoading] = useState(true);
     const [enterprises, setEnterprises] = useState(null);
-    const [errors, setErrors] = useState('');
+    const [apiErrors, setApiErrors] = useState(null);
 
-    const fetchData = () => {
+    const fetchData = async() => {
         fetch(link_api + 'enterprise/retrieve', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', authorization: PersonService.getToken() }
@@ -24,8 +24,8 @@ const Consult_Enterprise = () => {
                 })
             } else {
                 response.json().then((data) => {
+                    setApiErrors(data.message);
                     setLoading(false);
-                    setErrors(data.message);
                 })
             }
         })
@@ -40,17 +40,29 @@ const Consult_Enterprise = () => {
         )
     } else {
         return (
-            <div className="col-md-12 text-center"> 
-                {enterprises.map(enterprise => {
-                    return (
-                        <div key={enterprise.IDENTERPRISE}>
-                            {enterprise.IDENTERPRISE}
-                            {enterprise.NAME_ENTERPRISE}
-                            {enterprise.DESCRIPTION_ENT}
-                        </div>
-                    )
-                })}
-            </div>
+            <div>
+                <div className="col-md-12 text-center"> 
+                    {apiErrors ? (<div className="alert alert-danger" role="alert">
+                        {apiErrors}
+                    </div>)
+                    : 
+                    (
+                    <div className="alert alert-success" role="alert">
+                        Chargement réussi
+                    </div>
+                    )}
+
+                    {enterprises !== null && enterprises.map(enterprise => {
+                        return (
+                            <div key={enterprise.IDENTERPRISE}>
+                                {enterprise.IDENTERPRISE}
+                                {enterprise.NAME_ENTERPRISE}
+                                {enterprise.DESCRIPTION_ENT}
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>   
         )
     }
     
