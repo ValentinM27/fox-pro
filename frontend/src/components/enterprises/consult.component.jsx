@@ -52,37 +52,36 @@ const Consult_Enterprise = () => {
         )
     } else {
         return (
-            <div>
-                <div className="col-md-12 text-center"> 
-                    {apiErrors ? (<div className="alert alert-danger" role="alert">
-                        {apiErrors}
-                    </div>)
-                    : 
-                    (
-                    <div className="alert alert-success" role="alert">
-                        Chargement réussi
-                    </div>
-                    )}
+            <div className="col-md-12 text-center"> 
+                {apiErrors ? (
+                <div className="alert alert-danger" role="alert">
+                    {apiErrors}
+                </div>)
+                : 
+                (
+                <div className="alert alert-success" role="alert">
+                    Chargement réussi
+                </div>
+                )}
 
-                    {enterprises !== null && enterprises.map(enterprise => {
-                        return (
-                        <div className="container mt-4 mb-4 p-3 d-flex justify-content-center" key={enterprise.IDENTERPRISE}>
-                            <div className="card p-4">
-                                <div className=" image d-flex flex-column justify-content-center align-items-center"> 
-                                    <span className="name mt-3">Identifiant Fox'Pro : {enterprise.IDENTERPRISE}</span>
+                {enterprises !== null && enterprises.map(enterprise => {
+                    return (
+                    <div className="container mt-4 mb-4 p-3 d-flex justify-content-center" key={enterprise.IDENTERPRISE}>
+                        <div className="card p-4">
+                            <div className=" image d-flex flex-column justify-content-center align-items-center"> 
+                                <span className="name mt-3">Identifiant Fox'Pro : {enterprise.IDENTERPRISE}</span>
 
-                                    <span>Nom entreprise : {enterprise.NAME_ENTERPRISE}</span> 
+                                <span>Nom entreprise : {enterprise.NAME_ENTERPRISE}</span> 
 
-                                    <div className="d-flex flex-row justify-content-center align-items-center mt-3"> 
-                                        <span>Description : {enterprise.DESCRIPTION_ENT}</span> </div>
-                                    <div className=" d-flex mt-2"> <button onClick={() => GoToDetails(enterprise.IDENTERPRISE)} className="btn1 btn-dark">Consulter</button> </div>
-                                </div>
+                                <div className="d-flex flex-row justify-content-center align-items-center mt-3"> 
+                                    <span>Description : {enterprise.DESCRIPTION_ENT}</span> </div>
+                                <div className=" d-flex mt-2"> <button onClick={() => GoToDetails(enterprise.IDENTERPRISE)} className="btn1 btn-dark">Consulter</button> </div>
                             </div>
                         </div>
-                        )
-                    })}
-                </div>
-            </div>   
+                    </div>
+                    )
+                })}
+            </div> 
         )
     }
     

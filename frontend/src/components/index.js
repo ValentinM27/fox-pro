@@ -6,3 +6,4 @@ export { default as Notfound } from './notfound.jsx';
 export { default as Profil } from './person/profil.component.jsx';
 export { default as CreateEnterprise } from './enterprises/create.component.jsx';
 export { default as ConsultEnterprise } from './enterprises/consult.component.jsx';
+export { default as DetailEnterprise } from './enterprises/details.component.jsx';
