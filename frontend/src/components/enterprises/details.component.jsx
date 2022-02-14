@@ -3,17 +3,18 @@ import link_api from '../../ressources/link_api';
 import PersonService from '../../services/person.service';
 
 /**
- * @Component Permet de consulter les détails d'une entreprise et d'accéder aux ptions d'une entreprise
+ * @Component Permet de consulter les détails d'une entreprise et d'accéder aux otions d'une entreprise
  */
 const Detail_Enterprise = () => {
-    let enterpriseDetail = {identerprise: "", name: "", description: "", lastname: "", firstname: ""};
+    const enterpriseDetail = {identerprise: "", name: "", description: "", lastname: "", firstname: ""};
+    const [enteprise, setEnterprises] = useState(enterpriseDetail);
     const [loading, setLoading] = useState(true);
     const [apiErrors, setApiErrors] = useState(null);
     
     const queryParams = new URLSearchParams(window.location.search);
     const idEnterprise = queryParams.get("id");
 
-    const fetchData = async() => {
+    const fetchData = () => {
         fetch(link_api + 'enterprise/id/' + idEnterprise, {
             method: 'GET',
             headers: {  'Content-Type': 'application/json', authorization: PersonService.getToken() }
@@ -21,15 +22,18 @@ const Detail_Enterprise = () => {
         .then((response) => {
             if(response.status === 200) {
                 response.json().then((data) => {
-                    enterpriseDetail = {
+
+                    let dataSet = {
                         identerprise : data.ENTERPRISE[0].IDENTERPRISE,
                         name : data.ENTERPRISE[0].NAME_ENTERPRISE,
                         description : data.ENTERPRISE[0].DESCRIPTION_ENT,
                         lastname : data.ENTERPRISE[0].LASTNAME_P,
                         firstname : data.ENTERPRISE[0].FIRSTNAME_P
-                    }
+                    }  
 
-                    console.log(enterpriseDetail)
+                    console.log(dataSet)
+                    
+                    setEnterprises(dataSet);
                     setLoading(false);
                 })
             } else {
@@ -56,8 +60,8 @@ const Detail_Enterprise = () => {
                     {apiErrors}
                 </div>) 
                 : 
-                (<div className="alert alert-success" role="alert">
-                    Chargement réussi
+                (<div>
+                    <h1>{enteprise.name}</h1>
                 </div>)}
             </div>
         )
