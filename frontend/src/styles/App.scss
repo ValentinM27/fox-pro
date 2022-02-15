@@ -1,0 +1,19 @@
+// Color variables
+$_main : #212529;
+
+.scrollable-div {
+    overflow: auto;
+
+    min-height: 25vh;
+    max-height: 25vh;
+}
+
+button {
+    background: $_main;
+    color: whitesmoke;
+    padding: 10px 10px;
+
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+}

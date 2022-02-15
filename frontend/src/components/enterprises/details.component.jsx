@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import link_api from '../../ressources/link_api';
 import PersonService from '../../services/person.service';
 
+// Import des component
+import Projects from '../projects/enterprise.component.jsx';
+import Employees from './employees.component';
+
 /**
  * @Component Permet de consulter les détails d'une entreprise et d'accéder aux otions d'une entreprise
  */
@@ -30,8 +34,6 @@ const Detail_Enterprise = () => {
                         lastname : data.ENTERPRISE[0].LASTNAME_P,
                         firstname : data.ENTERPRISE[0].FIRSTNAME_P
                     }  
-
-                    console.log(dataSet)
                     
                     setEnterprises(dataSet);
                     setLoading(false);
@@ -62,6 +64,24 @@ const Detail_Enterprise = () => {
                 : 
                 (<div>
                     <h1>{enteprise.name}</h1>
+
+                    <div className="d-flex p-2">
+                        <div className=" w-75 p-3">
+                            <h2>Vos projets</h2>
+                            <div className="scrollable-div">
+                                <Projects />
+                            </div>
+                        </div>
+
+                        <div className="w-75 p-3">
+                            <h2>Vos employés</h2>
+                            <div className="scrollable-div">
+                                <Employees />
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
                 </div>)}
             </div>
         )
