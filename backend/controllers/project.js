@@ -60,7 +60,7 @@ exports.getProjectsByIDenterprise = (req, res) => {
 
         else if(result !== undefined && result.length !== 0) {
             const sql = `SELECT IDPROJECT, NAME_PROJECT, STATUT, DESCRIPTION_P, START_DATE_P, END_DATE_P, LASTNAME_P, FIRSTNAME_P
-                        FROM PROJECT INNER JOIN PERSON ON PROJECT.IDPERSON = PERSON.IDPROJECT 
+                        FROM PROJECT INNER JOIN PERSON ON PROJECT.IDCREATOR = PERSON.IDPERSON 
                         WHERE PROJECT.IDENTERPRISE="${IDENTERPRISE}"`;
 
             connection.query(sql, (err, result) => {
