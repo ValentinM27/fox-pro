@@ -11,7 +11,7 @@ import Employees from './employees.component';
  */
 const Detail_Enterprise = () => {
     const enterpriseDetail = {identerprise: "", name: "", description: "", lastname: "", firstname: ""};
-    const [enteprise, setEnterprises] = useState(enterpriseDetail);
+    const [enterprise, setEnterprises] = useState(enterpriseDetail);
     const [loading, setLoading] = useState(true);
     const [apiErrors, setApiErrors] = useState(null);
     
@@ -63,7 +63,7 @@ const Detail_Enterprise = () => {
                 </div>) 
                 : 
                 (<div>
-                    <h1>{enteprise.name}</h1>
+                    <h1>{enterprise.name}</h1>
 
                     <div className="d-flex p-2">
                         <div className=" w-75 p-3">

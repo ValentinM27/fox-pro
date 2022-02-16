@@ -12,7 +12,7 @@ const Enterprise_employees = () => {
   if (!isProjects) {
     return (
       <div>
-        <div className="alert alert-danger" role="alert">
+        <div className="alert alert-warning" role="alert">
           Vous n'avez actuellement aucuns employés
         </div>
 
