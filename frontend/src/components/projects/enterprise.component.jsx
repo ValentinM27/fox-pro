@@ -78,7 +78,8 @@ const Project_Enterprise = () => {
     else {
       return (
         <div className="col-md-12 text-center">
-          Nombre de projet : {projects.length}
+          <hr />
+          <h3>Nombre de projet : {projects.length}</h3>
           {projects !== null && projects.map(project => {
                     return (
                     <div className="container mt-4 mb-4 p-3 d-flex justify-content-center" key={project.IDPROJECT}>

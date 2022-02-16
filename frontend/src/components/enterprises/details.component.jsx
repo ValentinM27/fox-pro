@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import link_api from '../../ressources/link_api';
 import PersonService from '../../services/person.service';
 
@@ -17,6 +19,7 @@ const Detail_Enterprise = () => {
     
     const queryParams = new URLSearchParams(window.location.search);
     const idEnterprise = queryParams.get("id");
+    const navigate = useNavigate();
 
     const fetchData = () => {
         fetch(link_api + 'enterprise/id/' + idEnterprise, {
@@ -47,6 +50,27 @@ const Detail_Enterprise = () => {
         })
     }
 
+    /**
+     * Permet de passer sur le component de liste des projets 
+     */
+    const handleFocusOnProjects = () => {
+        navigate({
+            pathname: '/projects',
+            search: `?id=` + idEnterprise,
+        });
+    }
+
+    /**
+     * Permet d'aller au @Component pour créer un projet
+     * @TODO
+     */
+    const handleCreateProject = () => {
+        navigate({
+            pathname: '/project/create',
+            search: `?id=` + idEnterprise,
+        });
+    }
+
     if(loading) {
         fetchData();
         return (
@@ -68,6 +92,8 @@ const Detail_Enterprise = () => {
                     <div className="d-flex p-2">
                         <div className=" w-75 p-3">
                             <h2>Vos projets</h2>
+                            <button className="btn1 btn-dark space" onClick={() => handleFocusOnProjects()}>Voir les projets</button>
+                            <button className="btn1 btn-dark space" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
                             <div className="scrollable-div">
                                 <Projects />
                             </div>
