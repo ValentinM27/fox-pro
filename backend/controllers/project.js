@@ -18,7 +18,7 @@ exports.createProject = (req,res) => {
     const IDPERSON = res.locals.IDPERSON;
     const IDENTERPRISE = req.params.identerprise;
 
-    const sql = `SELECT IDPERSON, IS_PM, IS_ADMIN FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}"`;
+    const sql = `SELECT IDPERSON, IS_PM, IS_ADMIN FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}"`;
 
     connection.query(sql, (err, result) => {
 
@@ -40,5 +40,38 @@ exports.createProject = (req,res) => {
         }
 
         else res.status(403).json({message : "Vous n'avez pas les droits pour créer un projet"});
+    })
+}
+
+/**
+ * Permet de récupérer les projets d'une entreprise grâce à son ID
+ * Besoin que la personnes envoyant soit membre de l'entreprise
+ * @param req
+ * @param res
+ */
+exports.getProjectsByIDenterprise = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+    const IDENTERPRISE = req.params.identerprise;
+
+    const sql = `SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}"`;
+
+    connection.query(sql, (err, result) => {
+        if(err) res.status(200).json({message: "Erreur serveur", Error: err});
+
+        else if(result !== undefined && result.length !== 0) {
+            const sql = `SELECT IDPROJECT, NAME_PROJECT, STATUT, DESCRIPTION_P, START_DATE_P, END_DATE_P, LASTNAME_P, FIRSTNAME_P
+                        FROM PROJECT INNER JOIN PERSON ON PROJECT.IDPERSON = PERSON.IDPROJECT 
+                        WHERE PROJECT.IDENTERPRISE="${IDENTERPRISE}"`;
+
+            connection.query(sql, (err, result) => {
+                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                else if(result !== undefined || result.length !== 0) res.status(200).json({PROJECTS : result});
+
+                else res.status(404).json({message : "Vous n'avez actuellement aucun projet pour cette entreprise"});
+            })
+        }
+
+        else res.status(403).json({message : "Vous n'avez pas les droits pour visualiser les projets de cette entreprise"});
     })
 }
