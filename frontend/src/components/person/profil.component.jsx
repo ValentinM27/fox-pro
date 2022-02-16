@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PersonService from '../../services/person.service.js';
-import { useNavigate } from 'react-router-dom';
 
 import logo_profil from '../../images/profil_logo.jpg';
 
