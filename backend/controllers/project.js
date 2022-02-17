@@ -28,7 +28,7 @@ exports.createProject = (req,res) => {
 
             const {NAME_PROJECT, STATUT, DESCRIPTION_P, START_DATE_P, END_DATE_P} = req.body;
 
-            if(NAME_PROJECT === undefined || STATUT === undefined || DESCRIPTION_P === undefined || START_DATE_P === undefined || END_DATE_P === undefined) {
+            if(!NAME_PROJECT || !STATUT || !DESCRIPTION_P || !START_DATE_P || !END_DATE_P) {
                 res.status(403).json({message : "Veuillez saisir toutes les données demandées"});
             } else { 
                 const sql = `INSERT INTO PROJECT (NAME_PROJECT, STATUT, DESCRIPTION_P,

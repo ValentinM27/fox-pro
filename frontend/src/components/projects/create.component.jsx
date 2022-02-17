@@ -38,7 +38,7 @@ const Create_Project = () => {
     setFormErrors(validate(formValues))
 
     if(Object.keys(formErrors).length === 0) {
-      const project = {NAME_PROJECT : formValues.name, STATUT : "CLOSED", DESCRIPTION_P : formValues.description, START_DATE_P : moment(formValues.startDate).format('YYYY/MM/DD'), END_DATE_P : moment(formValues.endDate).format('YYYY/MM/DD')};
+      const project = {NAME_PROJECT : formValues.name, STATUT : formValues.status, DESCRIPTION_P : formValues.description, START_DATE_P : moment(formValues.startDate).format('YYYY/MM/DD'), END_DATE_P : moment(formValues.endDate).format('YYYY/MM/DD')};
       
       fetch(link_api + 'project/create/' + idEnterprise, {
         method : 'POST',
@@ -172,18 +172,18 @@ const Create_Project = () => {
                 }
 
                 <div className="form-group">
-                    <label htmlFor="status">Status</label>
+                    <label htmlFor="status">Statut</label>
                     <select 
                         name="status"
                         className="form-control" 
                         value={ formValues.status }
                         onChange={ handleChange }
                     > 
-                      <option>Ouvert</option>
-                      <option>Abandonné</option>
-                      <option>Maintenance</option>
-                      <option>Suspendu</option>
-                      <option>Cloturé</option>
+                      <option value="OPEN">Ouvert</option>
+                      <option value="ABANDONED">Abandonné</option>
+                      <option value="MAINTENANCE">Maintenance</option>
+                      <option value="SUSPENDED">Suspendu</option>
+                      <option value="CLOSED">Cloturé</option>
                     </select>
                 </div>
                 <hr />

@@ -152,7 +152,7 @@ const Project_Enterprise = () => {
                         </div>
                     </div>
                     )
-                })}
+                }).reverse()}
         </div>
       )
     }
