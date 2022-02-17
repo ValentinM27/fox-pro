@@ -89,17 +89,21 @@ const Detail_Enterprise = () => {
                 (<div>
                     <h1>{enterprise.name}</h1>
 
-                    <div className="d-flex p-2">
-                        <div className=" w-75 p-3">
+                    <div className="d-flex flex-column bd-highlight mb-3">
+
+                        <div className=" w-100 p-2 bd-highlight">
                             <h2>Vos projets</h2>
                             <button className="btn1 btn-dark space" onClick={() => handleFocusOnProjects()}>Voir les projets</button>
                             <button className="btn1 btn-dark space" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
+                            <hr />
                             <div className="scrollable-div">
                                 <Projects />
                             </div>
                         </div>
 
-                        <div className="w-75 p-3">
+                        <hr />
+
+                        <div className="w-100 p-2 bd-highlight ">
                             <h2>Vos employés</h2>
                             <div className="scrollable-div">
                                 <Employees />

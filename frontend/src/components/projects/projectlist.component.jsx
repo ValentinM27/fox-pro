@@ -20,8 +20,7 @@ const Projects_list = () => {
      const handleCreateProject = () => {
         navigate({
             pathname: '/project/create',
-            search: `?id=` + idEnterprise,
-            title: 'Salut'
+            search: `?id=` + idEnterprise
         });
     }
 
@@ -31,7 +30,9 @@ const Projects_list = () => {
             Chargement réussi
         </div>
 
-        <button className="btn1 btn-dark space" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
+        <button className="btn1 btn-dark" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
+
+        <hr />
 
         <Projects />
     </div>
