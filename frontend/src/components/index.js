@@ -7,3 +7,5 @@ export { default as Profil } from './person/profil.component.jsx';
 export { default as CreateEnterprise } from './enterprises/create.component.jsx';
 export { default as ConsultEnterprise } from './enterprises/consult.component.jsx';
 export { default as DetailEnterprise } from './enterprises/details.component.jsx';
+export { default as ListProject } from './projects/projectlist.component.jsx';
+export { default as CreateProject } from './projects/create.component.jsx';

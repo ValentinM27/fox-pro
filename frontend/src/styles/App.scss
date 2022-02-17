@@ -1,19 +1,49 @@
 // Color variables
 $_main : #212529;
+$_lightback : #a6a6a6;
 
 .scrollable-div {
     overflow: auto;
 
-    min-height: 50vh;
-    max-height: 50vh;
+    min-height: 25vh;
+    max-height: 100vh;
 }
 
 button {
     background: $_main;
     color: whitesmoke;
-    padding: 10px 10px;
+    padding: 15px 15px;
 
     font-weight: bold;
     text-decoration: none;
     border: none;
+
+    border-radius: 15px !important;
+}
+
+.space { 
+    margin-left: 15px;
+}
+
+.custom-h3 { 
+    font-size: 1.2em;
+}
+
+.custom-desc { 
+    background: $_lightback;
+    width: 75%;
+    padding: 10px 10px;
+    border-radius: 5px;
+
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.margin-top { 
+    margin-top: 15px;
+}
+
+.centered { 
+    margin-left: auto !important;
+    margin-right: auto !important;
 }

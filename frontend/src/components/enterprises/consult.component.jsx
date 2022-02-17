@@ -68,13 +68,12 @@ const Consult_Enterprise = () => {
                     return (
                     <div className="container mt-4 mb-4 p-3 d-flex justify-content-center" key={enterprise.IDENTERPRISE}>
                         <div className="card p-4">
-                            <div className=" image d-flex flex-column justify-content-center align-items-center"> 
-                                <span className="name mt-3">Identifiant Fox'Pro : {enterprise.IDENTERPRISE}</span>
+                            <div className=" image d-flex flex-column justify-content-center align-items-center">
+                                <h2>{enterprise.NAME_ENTERPRISE}</h2>  
+                                <h3 className="custom-h3 name mt-3">Identifiant Fox'Pro : {enterprise.IDENTERPRISE}</h3>
 
-                                <span>Nom entreprise : {enterprise.NAME_ENTERPRISE}</span> 
-
-                                <div className="d-flex flex-row justify-content-center align-items-center mt-3"> 
-                                    <span>Description : {enterprise.DESCRIPTION_ENT}</span> </div>
+                                <p>{enterprise.DESCRIPTION_ENT}</p> 
+                                
                                 <div className=" d-flex mt-2"> <button onClick={() => GoToDetails(enterprise.IDENTERPRISE)} className="btn1 btn-dark">Consulter</button> </div>
                             </div>
                         </div>

@@ -28,15 +28,21 @@ exports.createProject = (req,res) => {
 
             const {NAME_PROJECT, STATUT, DESCRIPTION_P, START_DATE_P, END_DATE_P} = req.body;
 
-            const sql = `INSERT INTO PROJECT (NAME_PROJECT, STATUT, DESCRIPTION_P,
+            if(!NAME_PROJECT || !STATUT || !DESCRIPTION_P || !START_DATE_P || !END_DATE_P) {
+                res.status(403).json({message : "Veuillez saisir toutes les données demandées"});
+            } else { 
+                const sql = `INSERT INTO PROJECT (NAME_PROJECT, STATUT, DESCRIPTION_P,
                 START_DATE_P, END_DATE_P, IDCREATOR, IDENTERPRISE)
                 VALUES ( "${NAME_PROJECT}", "${STATUT}", "${DESCRIPTION_P}", "${START_DATE_P}", "${END_DATE_P}", "${IDPERSON}", "${IDENTERPRISE}")`;
 
-            connection.query(sql, (err) => {
-                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+                connection.query(sql, (err) => {
+                    if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
-                else res.status(200).json({message : "Projet crée !"});
-            })
+                    else res.status(200).json({message : "Projet crée !"});
+                })
+            }
+
+            
         }
 
         else res.status(403).json({message : "Vous n'avez pas les droits pour créer un projet"});
