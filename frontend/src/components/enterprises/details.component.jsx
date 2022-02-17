@@ -56,7 +56,7 @@ const Detail_Enterprise = () => {
     const handleFocusOnProjects = () => {
         navigate({
             pathname: '/projects',
-            search: `?id=` + idEnterprise,
+            search: `?id=` + idEnterprise + `&name=` + enterprise.name,
         });
     }
 
@@ -67,7 +67,7 @@ const Detail_Enterprise = () => {
     const handleCreateProject = () => {
         navigate({
             pathname: '/project/create',
-            search: `?id=` + idEnterprise,
+            search: `?id=` + idEnterprise + `&name=` + enterprise.name,
         });
     }
 
@@ -91,7 +91,7 @@ const Detail_Enterprise = () => {
 
                     <div className="d-flex flex-column bd-highlight mb-3">
 
-                        <div className=" w-100 p-2 bd-highlight">
+                        <div className=" w-75 p-2 bd-highlight centered">
                             <h2>Vos projets</h2>
                             <button className="btn1 btn-dark space" onClick={() => handleFocusOnProjects()}>Voir les projets</button>
                             <button className="btn1 btn-dark space" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
@@ -103,7 +103,7 @@ const Detail_Enterprise = () => {
 
                         <hr />
 
-                        <div className="w-100 p-2 bd-highlight ">
+                        <div className="w-75 p-2 bd-highlight centered">
                             <h2>Vos employés</h2>
                             <div className="scrollable-div">
                                 <Employees />

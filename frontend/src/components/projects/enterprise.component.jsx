@@ -143,7 +143,7 @@ const Project_Enterprise = () => {
                                   <div className="box">Date de fin prévue : <b>{new Date(project.END_DATE_P).toLocaleDateString()}</b></div>
                                 </div>
 
-                                <div className="w-75" Style="margin-top: 15px">
+                                <div className="w-75 margin-top">
                                   {handleProjectStatus(project.STATUT)}
                                 </div>
 

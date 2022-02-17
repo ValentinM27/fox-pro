@@ -11,6 +11,7 @@ import Projects from './enterprise.component';
 const Projects_list = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const idEnterprise = queryParams.get("id");
+    const nameEnterprise = queryParams.get("name");
     const navigate = useNavigate();
 
     /**
@@ -20,8 +21,18 @@ const Projects_list = () => {
      const handleCreateProject = () => {
         navigate({
             pathname: '/project/create',
-            search: `?id=` + idEnterprise
+            search: `?id=` + idEnterprise + `&name=` + nameEnterprise
         });
+    }
+
+    /**
+     * Permet de retouner à la page entreprise
+     */
+    const handleReturPreviousPage = () => { 
+      navigate({
+        pathname: '/enterprise/consult',
+        search: `?id=` + idEnterprise
+    });
     }
 
   return (
@@ -30,8 +41,10 @@ const Projects_list = () => {
             Chargement réussi
         </div>
 
-        <button className="btn1 btn-dark" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
+        <p>Vous visualisez les projets de </p><h1>{nameEnterprise}</h1>
 
+        <button className="btn1 btn-dark" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
+        <button className="btn1 btn-dark space" onClick={() => handleReturPreviousPage()}>Page entreprise</button>
         <hr />
 
         <Projects />
