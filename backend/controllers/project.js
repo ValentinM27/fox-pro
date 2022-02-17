@@ -18,13 +18,15 @@ exports.createProject = (req,res) => {
     const IDPERSON = res.locals.IDPERSON;
     const IDENTERPRISE = req.params.identerprise;
 
-    const sql = `SELECT IDPERSON, IS_PM, IS_ADMIN FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}"`;
+    const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
+                UNION
+                (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
 
     connection.query(sql, (err, result) => {
 
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
-        else if(result !== undefined && result.length !== 0 && (result[0].IS_PM === 1 || result[0].IS_ADMIN === 1)) {
+        else if(result !== undefined && result.length !== 0) {
 
             const {NAME_PROJECT, STATUT, DESCRIPTION_P, START_DATE_P, END_DATE_P} = req.body;
 
@@ -59,7 +61,9 @@ exports.getProjectsByIDenterprise = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
     const IDENTERPRISE = req.params.identerprise;
 
-    const sql = `SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}"`;
+    const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
+                UNION
+                (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
 
     connection.query(sql, (err, result) => {
         if(err) res.status(200).json({message: "Erreur serveur", Error: err});
@@ -81,3 +85,6 @@ exports.getProjectsByIDenterprise = (req, res) => {
         else res.status(403).json({message : "Vous n'avez pas les droits pour visualiser les projets de cette entreprise"});
     })
 }
+
+
+
