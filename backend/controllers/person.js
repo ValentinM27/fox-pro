@@ -89,6 +89,11 @@ exports.login = (req, res) => {
     })
 }
 
+/**
+ * Permet de récupérer les données de l'utilisateur connecté
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.retrieveDate = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
 
@@ -127,6 +132,11 @@ exports.changePassword = (req, res) => {
     } else res.status(403).json({message : "Veuillez saisir deux fois le même mot de passe"});
 }
 
+/**
+ * Permet de supprimer un utilisateur
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.delete = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
 
