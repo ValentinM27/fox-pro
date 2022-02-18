@@ -15,6 +15,7 @@ const Project_Enterprise = () => {
 
   const queryParams = new URLSearchParams(window.location.search);
   const idEnterprise = queryParams.get("id");
+  const nameEnterprise = queryParams.get("name");
   
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const Project_Enterprise = () => {
         response.json().then((data) => {
             setProjects(data.PROJECTS);
             setLoading(false);
-            setIsProject(true); 
+            if(projects.length !== 0) setIsProject(true); 
         })
       } else {
         if(response.status === 500) { 
@@ -97,6 +98,7 @@ const Project_Enterprise = () => {
     })
     .then((response) => {
       if(response.status === 200) {
+        if(projects.length === 0) setProjects(false);
         window.location.reload(false);
       } else {
         if(response.status === 500) { 
@@ -135,7 +137,7 @@ const Project_Enterprise = () => {
               </div>
       
               <div className="col-md-12 text-center">
-                <button onClick={() => {navigate('/project/create')}}>Créer un projet</button>
+                <button onClick={() => {navigate({pathname: '/project/create', search: `?id=` + idEnterprise + `&name=` + nameEnterprise})}}>Créer un projet</button>
               </div>
             </div>
           )}

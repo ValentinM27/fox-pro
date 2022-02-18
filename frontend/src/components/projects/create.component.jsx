@@ -8,7 +8,7 @@ import personService from '../../services/person.service';
  * @Component Permet de créer un projet 
  */
 const Create_Project = () => {
-  const initValue = {name : "", status : "", description : "", startDate : "", endDate : ""};
+  const initValue = {name : "", status : "OPEN", description : "", startDate : "", endDate : ""};
   const [formValues, setFormValues] = useState(initValue);
   const [formErrors, setFormErrors] = useState({});
 
