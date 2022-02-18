@@ -189,13 +189,13 @@ exports.updateUser = (req, res) => {
 
     const sql = `UPDATE PERSON SET`;
 
-    if(LASTNAME_P !== undefined) {
+    if(LASTNAME_P !== undefined && LASTNAME_P.length !== 0) {
         connection.query(sql+` LASTNAME_P = "${LASTNAME_P}" WHERE IDPERSON = "${IDPERSON}"`, (err) => {
             if(err) res.status(500).json({message : "Erreur serveur, mise à jour LASTNAME", Erreur : err});
         })
     }
 
-    if(FIRSTNAME_P !== undefined) {
+    if(FIRSTNAME_P !== undefined && FIRSTNAME_P.length !== 0) {
         connection.query(sql+` FIRSTNAME_P = "${FIRSTNAME_P}" WHERE IDPERSON = "${IDPERSON}"`, (err) => {
             if(err) res.status(500).json({message : "Erreur serveur, mise à jour FIRSTNAME", Erreur : err});
         })

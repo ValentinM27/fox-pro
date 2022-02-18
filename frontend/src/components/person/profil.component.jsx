@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PersonService from '../../services/person.service.js';
+import ModifyProfil from './modify.component.jsx';
 import link_api from '../../ressources/link_api.js';
 
 import logo_profil from '../../images/profil_logo.jpg';
@@ -97,7 +98,7 @@ export default class Profil extends Component {
         } else {
             /** Add handle of profil modification */
             return (
-                <div>It's working !</div>
+                <ModifyProfil firstname={this.state.firstname} lastname={this.state.lastname}/>
             )
         }
     }
