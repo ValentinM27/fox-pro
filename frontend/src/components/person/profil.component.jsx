@@ -98,7 +98,14 @@ export default class Profil extends Component {
         } else {
             /** Add handle of profil modification */
             return (
-                <ModifyProfil firstname={this.state.firstname} lastname={this.state.lastname}/>
+                <div>
+                    <ModifyProfil firstname={this.state.firstname} lastname={this.state.lastname}/>
+                    
+                    <div className="text-center">
+                        <button onClick={() => {this.setState({modification : false})}} className="btn1 btn-dark orange margin-top">Annuler</button> 
+                    </div>
+                </div>
+                
             )
         }
     }

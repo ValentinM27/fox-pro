@@ -111,7 +111,7 @@ const Modify_profil = (props) => {
 
                 <div className="col-md-12 text-center">
                     <div className="form-group">
-                        <button type="submit" className="btn btn-primary">modifier</button>
+                        <button type="submit" className="btn btn-primary">Modifier</button>
                     </div>      
                 </div>
 
