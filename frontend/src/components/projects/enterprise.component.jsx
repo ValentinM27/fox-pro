@@ -87,6 +87,28 @@ const Project_Enterprise = () => {
     }
   }
 
+  /**
+   * Permet de supprimer un projet via son id
+   */
+  const handleOnDelete = (idproject) => {
+    fetch(link_api + 'Project/delete/' + idEnterprise + '/' + idproject, { 
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json', authorization: PersonService.getToken()}
+    })
+    .then((response) => {
+      if(response.status === 200) {
+        window.location.reload(false);
+      } else {
+        if(response.status === 500) { 
+          response.json().then((data) => {
+            setApiErrors(data.message);
+          })
+        }
+        setLoading(false);
+      }
+    });
+  }
+
   if(loading) { 
     fetchData();
     return (
@@ -124,6 +146,12 @@ const Project_Enterprise = () => {
     else {
       return (
         <div className="col-md-12 text-center">
+          {apiErrors ? (
+            <div className="alert alert-danger" role="alert">
+              {apiErrors}
+            </div>
+          )
+          : (<br />)}
           <h3>Nombre de projets : {projects.length}</h3>
           {projects !== null && projects.map(project => {
                     return (
@@ -147,7 +175,10 @@ const Project_Enterprise = () => {
                                   {handleProjectStatus(project.STATUT)}
                                 </div>
 
-                                <div className=" d-flex mt-2"> <button className="btn1 btn-dark">Consulter</button> </div>
+                                <div className=" d-flex mt-2"> 
+                                  <button className="btn1 btn-dark">Consulter</button>
+                                  <button onClick={() => handleOnDelete(project.IDPROJECT)} className="btn1 btn-dark red space">Supprimer</button> 
+                                </div>
                             </div>
                         </div>
                     </div>
