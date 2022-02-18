@@ -14,4 +14,7 @@ router.get('/enterprise/:identerprise', auth, projectCtrl.getProjectsByIDenterpr
 // POST
 router.post('/create/:identerprise', auth, projectCtrl.createProject);
 
+// DELETE 
+router.delete('/delete/:identerprise/:idproject', auth, projectCtrl.deleteProject);
+
 module.exports = router;

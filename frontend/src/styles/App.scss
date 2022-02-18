@@ -13,6 +13,7 @@ button {
     background: $_main;
     color: whitesmoke;
     padding: 15px 15px;
+    min-width: 150px;
 
     font-weight: bold;
     text-decoration: none;
@@ -46,4 +47,12 @@ button {
 .centered { 
     margin-left: auto !important;
     margin-right: auto !important;
+}
+
+.red { 
+    background : #be0202 !important;
+}
+
+.orange { 
+    background: #eb9f2d !important;
 }
