@@ -19,7 +19,7 @@ const Home = () => {
         <table Style="min-height: 80vh" className="centered">
           <tbody>
             <tr>
-              <td class="align-middle text-center">
+              <td className="align-middle text-center">
                 <span>Bienvenue sur Fox'Pro</span><br />
                 <span>L'outil pour gérer vos entreprises !</span><br />
                 <button onClick={handleOnLogin} className="btn btn-primary margin-top orange">

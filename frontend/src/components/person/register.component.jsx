@@ -31,27 +31,6 @@ const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setFormErrors(validate(formValues));
-
-    // Si il n'y a pas d'erreurs dans la saisie du formulaire, on procéde à l'envoi à l'API
-    if(Object.keys(formErrors).length === 0) {
-      const person = {FIRSTNAME_P : formValues.firstname, LASTNAME_P : formValues.lastname, EMAIL : formValues.email, PASSWORD_P : formValues.password, validatePASSWORD_P : formValues.validate_password};
-        
-        fetch(link_api + 'person/register', {
-            method: 'POST',
-            headers : { "Content-Type": "application/json" },
-            body : JSON.stringify(person)
-        }) 
-        .then ((response) => {
-            if(response.status === 200) {
-                navigate('/login');
-            }
-            else { 
-                response.json().then((data) => {
-                    setApiErrors(data.message);
-                });
-            }
-        })
-    }
   }
 
   /**
@@ -83,7 +62,34 @@ const Register = () => {
     
     if(!value.checkbox){errors.checkbox = "Vous devez accepter la politique de confidentialité"}
 
+    if(Object.keys(errors).length === 0){
+      sendData();      
+    }
+
     return errors;
+  }
+
+  /**
+   * Permet d'envoyer les données
+   */
+  const sendData = () => {
+    const person = {FIRSTNAME_P : formValues.firstname, LASTNAME_P : formValues.lastname, EMAIL : formValues.email, PASSWORD_P : formValues.password, validatePASSWORD_P : formValues.validate_password};
+        
+    fetch(link_api + 'person/register', {
+        method: 'POST',
+        headers : { "Content-Type": "application/json" },
+        body : JSON.stringify(person)
+    }) 
+    .then ((response) => {
+        if(response.status === 200) {
+            navigate('/login');
+        }
+        else { 
+            response.json().then((data) => {
+                setApiErrors(data.message);
+            });
+        }
+    })
   }
 
   return (

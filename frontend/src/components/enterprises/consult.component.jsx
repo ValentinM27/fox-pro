@@ -55,7 +55,9 @@ const Consult_Enterprise = () => {
 
                 {enterprises !== null && enterprises.map(enterprise => {
                     return (
-                        <Enterprise  IDENTERPRISE={enterprise.IDENTERPRISE} NAME_ENTERPRISE={enterprise.NAME_ENTERPRISE} DESCRIPTION_ENT={enterprise.DESCRIPTION_ENT}/>
+                        <div key={enterprise.IDENTERPRISE}>
+                            <Enterprise  IDENTERPRISE={enterprise.IDENTERPRISE} NAME_ENTERPRISE={enterprise.NAME_ENTERPRISE} DESCRIPTION_ENT={enterprise.DESCRIPTION_ENT}/>
+                        </div>
                     )
                 })}
             </div> 
