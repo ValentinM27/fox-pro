@@ -15,7 +15,7 @@
         const thisChar = PASSWORD_P.charAt(i);
         nbChar ++;
 
-        if(thisChar === thisChar.toUpperCase()){
+        if(thisChar.toLowerCase() != thisChar.toUpperCase() && thisChar === thisChar.toUpperCase()){
             nbMaj ++;
         }
         if (Number.isInteger(parseInt(thisChar))){

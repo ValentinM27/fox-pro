@@ -56,6 +56,8 @@ export default class Profil extends Component {
           });
     }
 
+    
+
     render() {
         if(!this.state.modification) {
             return (
@@ -95,18 +97,17 @@ export default class Profil extends Component {
                     </div>)}
                 </div>  
             )
-        } else {
+        } else if(this.state.modification) {
             /** Add handle of profil modification */
             return (
                 <div>
-                    <ModifyProfil firstname={this.state.firstname} lastname={this.state.lastname}/>
+                    <ModifyProfil firstname={this.state.firstname} lastname={this.state.lastname} email={this.state.email}/>
                     
                     <div className="text-center">
                         <button onClick={() => {this.setState({modification : false})}} className="btn1 btn-dark orange margin-top">Annuler</button> 
                     </div>
-                </div>
-                
+                </div> 
             )
-        }
+        } 
     }
 }
