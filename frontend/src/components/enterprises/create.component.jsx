@@ -33,27 +33,6 @@ const Create_enterprise = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setFormErrors(validate(formValues));
-
-        // Si il n'y a pas d'erreurs dans la saisie du formulaire, on envoi à l'API
-        if(Object.keys(formErrors).length === 0){
-            const enterprise = {NAME_ENTERPRISE : formValues.name, DESCRIPTION_ENT : formValues.description};
-
-            fetch(link_api + 'enterprise/create', {
-                method : 'POST',
-                headers : { 'Content-Type': 'application/json', authorization : PersonService.getToken() },
-                body : JSON.stringify(enterprise)
-            })
-            .then(response => {
-                if(response.status === 200) {
-                    navigate('/enterprise');
-                }
-                else {
-                    response.json().then((data) => {
-                        setApiErrors(data.message, data.errors);
-                    })
-                }
-            })
-        }
     }
 
     /**
@@ -73,9 +52,35 @@ const Create_enterprise = () => {
 
         if(value.description && value.description.length > 255){errors.description = "La description doit faire moins de 255 caractères"};
 
+        if(Object.keys(errors).length === 0){
+            sendData();      
+        }
+
         return errors;
     }
 
+    /**
+     * Procéde à l'envoie des données
+     */
+    const sendData = () => {
+        const enterprise = {NAME_ENTERPRISE : formValues.name, DESCRIPTION_ENT : formValues.description};
+
+        fetch(link_api + 'enterprise/create', {
+            method : 'POST',
+            headers : { 'Content-Type': 'application/json', authorization : PersonService.getToken() },
+            body : JSON.stringify(enterprise)
+        })
+        .then(response => {
+            if(response.status === 200) {
+                navigate('/enterprise');
+            }
+            else {
+                response.json().then((data) => {
+                    setApiErrors(data.message, data.errors);
+                })
+            }
+        })
+    }
     return (
         <div className="container">
             <h1 className="col-md-12 text-center">Création d'une entreprise</h1>

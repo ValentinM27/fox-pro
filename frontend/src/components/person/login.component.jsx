@@ -30,31 +30,6 @@ const Login = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setFormErrors(validate(formValues));
-
-        // Si il n'y a pas d'erreurs dans la saisie du formulaire, on procéde à l'envoi à l'API
-        if(Object.keys(formErrors).length === 0){
-            const person = {EMAIL : formValues.email, PASSWORD_P : formValues.password};
-
-            fetch(link_api + 'person/login', {
-                method : 'POST',
-                headers : { "Content-Type": "application/json" },
-                body : JSON.stringify(person)
-            })
-            .then ((response) => {
-                if(response.status === 200) {
-                    response.json().then((data) => {
-                        localStorage.setItem("token", data.token);
-                        localStorage.setItem("foxproID", data.ID_PERSON_);
-                        navigate('/');
-                    })
-                }
-                else {
-                    response.json().then((data) => {
-                        setApiErrors(data.message, data.errors);
-                    })
-                }
-            })
-        } 
     }
 
     /**
@@ -76,7 +51,38 @@ const Login = () => {
         if(!value.password){errors.password = "Veuillez saisir votre mot de passe"}
         else if(value.password.length < 8 || value.password.length > 40){errors.password = "Le mot de passe fait entre 8 et 40 caractères"}
 
+        if(Object.keys(errors).length === 0){
+            sendData();      
+        }
+
         return errors;
+    }
+
+    /**
+     * Procéde à l'envoie des données
+     */
+    const sendData = () => {
+        const person = {EMAIL : formValues.email, PASSWORD_P : formValues.password};
+
+        fetch(link_api + 'person/login', {
+            method : 'POST',
+            headers : { "Content-Type": "application/json" },
+            body : JSON.stringify(person)
+        })
+        .then ((response) => {
+            if(response.status === 200) {
+                response.json().then((data) => {
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("foxproID", data.ID_PERSON_);
+                    navigate('/');
+                })
+            }
+            else {
+                response.json().then((data) => {
+                    setApiErrors(data.message, data.errors);
+                })
+            }
+        })
     }
 
     return (

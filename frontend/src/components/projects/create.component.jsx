@@ -17,8 +17,8 @@ const Create_Project = () => {
   const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(window.location.search);
-    const idEnterprise = queryParams.get("id");
-    const nameEnterprise = queryParams.get("name");
+  const idEnterprise = queryParams.get("id");
+  const nameEnterprise = queryParams.get("name");
 
   /**
      * Permet de gérer les changements dans les champs du formulaire
@@ -35,30 +35,7 @@ const Create_Project = () => {
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setFormErrors(validate(formValues))
-
-    if(Object.keys(formErrors).length === 0) {
-      const project = {NAME_PROJECT : formValues.name, STATUT : formValues.status, DESCRIPTION_P : formValues.description, START_DATE_P : moment(formValues.startDate).format('YYYY/MM/DD'), END_DATE_P : moment(formValues.endDate).format('YYYY/MM/DD')};
-      
-      fetch(link_api + 'project/create/' + idEnterprise, {
-        method : 'POST',
-        headers : {"Content-Type": "application/json", authorization : personService.getToken()}, 
-        body : JSON.stringify(project)
-      })
-      .then((response) => {
-        if(response.status === 200) {
-          navigate({
-            pathname: '/projects',
-            search: `?id=` + idEnterprise + `&name=` + nameEnterprise
-          });
-        } else {
-          response.json().then((data) => {
-            console.log(data);
-            setApiErrors(data.message);
-          })
-        }
-      })
-    };
+    setFormErrors(validate(formValues));
   }
 
   /**
@@ -87,7 +64,37 @@ const Create_Project = () => {
     if(!endDate.getTime()){errors.endDate = "Veuillez saisir une date de fin"}
     else if(startDate.getTime() > endDate.getTime()){errors.endDate = "Veuillez saisir une date de fin ultérieur à la date de début"};
     
+    if(Object.keys(errors).length === 0){
+      sendData();      
+    }
+
     return errors;
+  }
+
+  /**
+   * Permet de procéder à l'envoi des données
+   */
+  const sendData = () => {
+    const project = {NAME_PROJECT : formValues.name, STATUT : formValues.status, DESCRIPTION_P : formValues.description, START_DATE_P : moment(formValues.startDate).format('YYYY/MM/DD'), END_DATE_P : moment(formValues.endDate).format('YYYY/MM/DD')};
+      
+    fetch(link_api + 'project/create/' + idEnterprise, {
+      method : 'POST',
+      headers : {"Content-Type": "application/json", authorization : personService.getToken()}, 
+      body : JSON.stringify(project)
+    })
+    .then((response) => {
+      if(response.status === 200) {
+        navigate({
+          pathname: '/projects',
+          search: `?id=` + idEnterprise + `&name=` + nameEnterprise
+        });
+      } else {
+        response.json().then((data) => {
+          console.log(data);
+          setApiErrors(data.message);
+        })
+      }
+    })
   }
 
   return (

@@ -14,6 +14,7 @@ router.get('/:identerprise/:idproject', auth, projectCtrl.getProjectByID)
 
 // POST
 router.post('/create/:identerprise', auth, projectCtrl.createProject);
+router.post('/update/:identerprise/:idproject', auth, projectCtrl.updateProject)
 
 // DELETE 
 router.delete('/delete/:identerprise/:idproject', auth, projectCtrl.deleteProject);

@@ -35,7 +35,7 @@ const Project_Enterprise = (props) => {
         response.json().then((data) => {
             setProjects(data.PROJECTS);
             setLoading(false);
-            if(projects.length !== 0) setIsProject(true); 
+            if(projects !== null && projects.length !== 0) setIsProject(true); 
         })
       } else {
         if(response.status === 500) { 
