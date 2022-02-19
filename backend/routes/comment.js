@@ -14,4 +14,7 @@ router.get('/retrieve/:identerprise/:idproject', auth, commentCtrl.getComment);
 // POST 
 router.post('/create/:idproject', auth, commentCtrl.createComment);
 
+// DELETE 
+router.delete('/delete/:idcomment', auth, commentCtrl.deleteComment);
+
 module.exports = router;

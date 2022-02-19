@@ -58,9 +58,9 @@ exports.createComment = (req, res) => {
  * @param {*} res 
  */
 exports.getComment = (req, res) => {
-    const IDPROJECT = req.params.project;
-    const IDENTERPRISE = req.params.enterprise;
-    const IDPERSON = res.locals.person;
+    const IDPROJECT = req.params.idproject;
+    const IDENTERPRISE = req.params.identerprise;
+    const IDPERSON = res.locals.IDPERSON;
 
     const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
                 UNION
@@ -70,7 +70,7 @@ exports.getComment = (req, res) => {
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
         else if (result !== undefined && result.length !== 0) {
-            const sql = `SELECT CONTENT_COMMENT, POST_DATE_COMMENT, FIRSTNAME_P, LASTNAME_P, ID_PERSON_ 
+            const sql = `SELECT IDCOMMENT, CONTENT_COMMENT, POST_DATE_COMMENT, FIRSTNAME_P, LASTNAME_P, ID_PERSON_ 
                         FROM COMMENT INNER JOIN PERSON ON COMMENT.IDCREATOR = PERSON.IDPERSON 
                         WHERE COMMENT.IDPROJECT="${IDPROJECT}"`;
             
@@ -81,5 +81,33 @@ exports.getComment = (req, res) => {
             })
         }
         else res.status(403).json({message : "Vous n'avez pas les droits pour visualiser ce projet"});
+    })
+}
+
+/**
+ * Permet de supprimer un commentaire
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.deleteComment = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+    const IDCOMMENT = req.params.idcomment;
+
+    const sql = `SELECT IDCREATOR FROM COMMENT WHERE IDCOMMENT = ${IDCOMMENT}`;
+
+    connection.query(sql, (err, result) => {
+        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+        else if (result !== undefined && result.length !== 0) {
+            const sql = `DELETE FROM COMMENT WHERE IDCOMMENT = ${IDCOMMENT}`;
+            
+            connection.query(sql, (err) => {
+                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                else res.status(200).json({message : "Commentaire supprimé"});
+            })
+        }
+
+        else res.status(403).json({message : "Vous n'êtes pas l'auteur de ce commentaire, vous ne pouvez pas le supprimer"})
     })
 }

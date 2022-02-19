@@ -22,6 +22,6 @@ app.use('/api/test', testRoutes);
 app.use('/api/person', personRoutes);
 app.use('/api/enterprise', enterpriseRoutes);
 app.use('/api/project', projectRoutes);
-app.use('/api/comment', commentRoutes);
+app.use('/api/comments', commentRoutes);
 
 module.exports = app;

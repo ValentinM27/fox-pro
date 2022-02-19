@@ -14,6 +14,14 @@ html {
     max-height: 100vh;
 }
 
+.delete {
+    background-color: #be0202 !important;
+    min-width: 60px !important;
+    height: auto;
+    border-radius: 50px !important;
+    margin-left: 15px;
+}
+
 button {
     background: $_main;
     color: whitesmoke;
@@ -25,6 +33,7 @@ button {
     border: none;
 
     border-radius: 15px !important;
+
 }
 
 .space { 
@@ -81,4 +90,14 @@ button {
 .red-font {
     color : rgb(175, 25, 25);
     font-weight: bold;
+}
+
+.comment {
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    padding: 20px;
+
+    background : $_lightback;
+    border-radius: 8px;
 }

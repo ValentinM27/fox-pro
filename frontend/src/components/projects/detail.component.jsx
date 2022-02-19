@@ -3,6 +3,7 @@ import link_api from '../../ressources/link_api.js';
 import personService from '../../services/person.service.js';
 import projectService from '../../services/project.service.js';
 import Modify from './modify.component.jsx';
+import Comments from '../comments/getcomment.component.jsx';
 
 /**
  * @Compoenent : Permet de consulter un projet en détail
@@ -138,6 +139,12 @@ const Detail_project = () => {
                                     {projectService.handleProjectStatus(project.status)}
                                 </div>
                                 {getOptions()}
+
+                                <br />
+                                <div>
+                                    <h1>Commentaires</h1>
+                                    <Comments />
+                                </div>
                             </div>
                         </div>
                     </div>
