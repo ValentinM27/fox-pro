@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import link_api from '../../ressources/link_api';
+import personService from '../../services/person.service.js';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * @Component : Permet de modifier un projet un
  */
 const Modify_project = (props) => {
-    const initValues = {name : "", description : "", state : ""};
-    const placeValues = {name : props.name, description : props.description, status : props.status};
+    const initValues = {name : "", description : "", state : "OPEN"};
+    const placeValues = {name : props.name, description : props.description};
     const [formValues, setFormValues] = useState(initValues);
     const [formErrors, setFormErrors] = useState({});
     const [apiErrors, setApiErrors] = useState('');
@@ -13,6 +16,8 @@ const Modify_project = (props) => {
     const queryParams = new URLSearchParams(window.location.search);
     const idEnterprise = queryParams.get("id");
     const nameEnterprise = queryParams.get("name");
+    const idProject = queryParams.get("idP");
+    const navigate = useNavigate();
 
     /**
      * Permet de gérer les changements dans les champs du formulaire
@@ -59,7 +64,26 @@ const Modify_project = (props) => {
      * Permet d'envoyer les données à l'api
      */
     const sendData = () => {
-
+        const project = {NAME_PROJECT : formValues.name, STATUT : formValues.status, DESCRIPTION_P : formValues.description};
+      
+        fetch(link_api + 'project/update/' + idEnterprise + '/' + idProject, {
+        method : 'POST',
+        headers : {"Content-Type": "application/json", authorization : personService.getToken()}, 
+        body : JSON.stringify(project)
+        })
+        .then((response) => {
+            if(response.status === 200) {
+                navigate({
+                    pathname: '/projects',
+                    search: `?id=` + idEnterprise + `&name=` + nameEnterprise
+                })
+            } else {
+                response.json().then((data) => {
+                console.log(data);
+                setApiErrors(data.message);
+                })
+            }
+        })
     }
 
     return (
@@ -112,7 +136,7 @@ const Modify_project = (props) => {
                 }
 
                 <div className="form-group">
-                    <label htmlFor="status">Statut</label>
+                    <label className="red-font" htmlFor="status">Statut (Veuillez selectionner le statut actuel du projet)</label>
                     <select 
                         name="status"
                         className="form-control" 
