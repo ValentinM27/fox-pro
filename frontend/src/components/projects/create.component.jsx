@@ -17,8 +17,8 @@ const Create_Project = () => {
   const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(window.location.search);
-    const idEnterprise = queryParams.get("id");
-    const nameEnterprise = queryParams.get("name");
+  const idEnterprise = queryParams.get("id");
+  const nameEnterprise = queryParams.get("name");
 
   /**
      * Permet de gérer les changements dans les champs du formulaire

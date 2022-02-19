@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import link_api from '../../ressources/link_api.js';
 import personService from '../../services/person.service.js';
 import projectService from '../../services/project.service.js';
+import Modify from './modify.component.jsx';
 
 /**
  * @Compoenent : Permet de consulter un projet en détail
@@ -13,6 +14,7 @@ const Detail_project = () => {
     const [loading, setLoading] = useState(true);
     const [apiErrors, setApiErrors] = useState(null);
     const [isDelete, setDelete] = useState(false);
+    const [modify, setModify] = useState(false);
 
     const queryParams = new URLSearchParams(window.location.search);
     const idEnterprise = queryParams.get("id");
@@ -81,7 +83,7 @@ const Detail_project = () => {
         if(personService.getFoxproID() === project.foxproID){
             return (
                 <div className=" d-flex mt-2"> 
-                    <button onClick={() => {}} className="btn1 btn-dark">Modifier</button> 
+                    <button onClick={() => {setModify(true)}} className="btn1 btn-dark">Modifier</button> 
                     {isDelete ? (
                         <button onClick={() => handleOnDelete(project.idproject)} className="btn1 btn-dark orange space">Confirmer</button> 
                     ) 
@@ -101,6 +103,8 @@ const Detail_project = () => {
                 <div className="spinner-border text-warning" role="status"></div>
             </div>   
         )
+    } else if(modify) {
+        return(<div><Modify name={project.name} description={project.description} status={project.status} /></div>)
     } else { 
         return (
             <div className="col-md-12 text-center">

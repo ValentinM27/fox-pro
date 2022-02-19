@@ -6,7 +6,6 @@ import personService from '../../services/person.service';
  * @Component : Permet de modifier le mail et le mots de passe de l'utilisateur
  */
 const Modify_pwd_login = (props) => {
-    const initValue = {password : "", validatePassword : ""};
     const initForm = {firstname : "", lastname : ""}
     const [formValues, setFormValues] = useState(initForm);
     const [formErrors, setFormErrors] = useState({});

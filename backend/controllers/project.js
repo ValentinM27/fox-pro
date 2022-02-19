@@ -170,3 +170,61 @@ exports.getProjectByID = (req, res) => {
     })
 }
 
+/**
+ * Permet de mettre à jour un projet 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.updateProject = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+    const IDENTERPRISE = req.params.identerprise;
+    const IDPROJECT = req.params.idproject;
+
+    const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
+    UNION
+    (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
+
+    connection.query(sql, (err, result) => {
+        if(err) res.status(500).json({message: "Erreur serveur", Error: err});
+
+        else if(result !== undefined && result.length !== 0) {
+
+            const sql = `SELECT IDENTERPRISE, IDPROJECT FROM PROJECT WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPROJECT="${IDPROJECT}"`;
+
+            connection.query(sql, (err, result) => {
+                if(err) res.status(500).json({message: "Erreur serveur", Error: err});
+
+                else if(result !== undefined && result.length !== 0) {
+                    const {NAME_PROJECT, STATUT, DESCRIPTION_P} = req.body;
+
+                    const sql = `UPDATE PROJECT SET`;
+
+                    if(NAME_PROJECT !== undefined && NAME_PROJECT.length !== 0) {
+                        connection.query(sql+` NAME_PROJECT = "${NAME_PROJECT}" WHERE IDPROJECT = "${IDPROJECT}"`, (err) => {
+                            if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+                        })
+                    }
+
+                    if(DESCRIPTION_P !== undefined && DESCRIPTION_P.length !== 0) {
+                        connection.query(sql+` DESCRIPTION_P = "${DESCRIPTION_P}" WHERE IDPROJECT = "${IDPROJECT}"`, (err) => {
+                            if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+                        })
+                    }
+
+                    if(STATUT !== undefined && STATUT.length !== 0) {
+                        connection.query(sql+` STATUT = "${STATUT}" WHERE IDPROJECT = "${IDPROJECT}"`, (err) => {
+                            if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+                        })
+                    }
+                    
+                    res.status(200).json({message : "Projet mis à jour"});  
+                }
+                
+                else res.status(403).json({message : "Ce projet n'appartient pas à cette entreprise ou n'existe pas"});
+            })
+        }
+
+        else res.status(403).json({message : "Vous n'avez pas les droits pour modifier les projets de cette entreprise"});
+    })
+}   
+
