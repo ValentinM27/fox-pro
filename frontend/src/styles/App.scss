@@ -1,6 +1,11 @@
 // Color variables
 $_main : #212529;
 $_lightback : #a6a6a6;
+$_orange : #eb9f2d;
+
+html {
+    min-height: 100%;
+}
 
 .scrollable-div {
     overflow: auto;
@@ -54,5 +59,21 @@ button {
 }
 
 .orange { 
-    background: #eb9f2d !important;
+    background: $_orange !important;
+}
+
+.home {
+    td span:first-child { 
+        font-size: 3.4em;
+        color: $_orange !important;
+    }
+
+    td span{
+        font-size: 1.4em;
+        color: rgb(73, 73, 73);
+    }
+}
+
+.navbar { 
+    min-height: 5%;
 }
