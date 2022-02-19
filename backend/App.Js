@@ -7,6 +7,7 @@ const testRoutes = require('./routes/test.js');
 const personRoutes = require('./routes/person.js');
 const enterpriseRoutes = require('./routes/enterprise.js');
 const projectRoutes = require('./routes/project.js');
+const commentRoutes = require('./routes/comment.js');
 
 //Set header, permet l'accès à l'API peut importe l'origine de l'appareil
 app.use((req, res, next) => {
@@ -21,5 +22,6 @@ app.use('/api/test', testRoutes);
 app.use('/api/person', personRoutes);
 app.use('/api/enterprise', enterpriseRoutes);
 app.use('/api/project', projectRoutes);
+app.use('/api/comment', commentRoutes);
 
 module.exports = app;
