@@ -97,7 +97,7 @@ const Detail_Enterprise = () => {
                             <button className="btn1 btn-dark space" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
                             <hr />
                             <div className="scrollable-div">
-                                <Projects />
+                                <Projects nameEnterprise={enterprise.name}/>
                             </div>
                         </div>
 

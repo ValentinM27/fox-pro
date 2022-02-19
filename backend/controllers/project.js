@@ -127,3 +127,46 @@ exports.deleteProject = (req, res) => {
     })
 }
 
+/**
+ * Permet de récupérer les informations d'un projet via son identifiant
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getProjectByID = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+    const IDENTERPRISE = req.params.identerprise;
+    const IDPROJECT = req.params.idproject;
+
+    const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
+    UNION
+    (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
+
+    connection.query(sql, (err, result) => {
+        if(err) res.status(500).json({message: "Erreur serveur", Error: err});
+
+        else if(result !== undefined && result.length !== 0) {
+            const sql = `SELECT IDENTERPRISE, IDPROJECT FROM PROJECT WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPROJECT="${IDPROJECT}"`;
+
+            connection.query(sql, (err, result) => {
+                if(err) res.status(500).json({message: "Erreur serveur", Error: err});
+
+                else if(result !== undefined && result.length !== 0) {
+                    const sql = `SELECT IDPROJECT, NAME_PROJECT, STATUT, DESCRIPTION_P, START_DATE_P, END_DATE_P, LASTNAME_P, FIRSTNAME_P, ID_PERSON_
+                                FROM PROJECT INNER JOIN PERSON ON PROJECT.IDCREATOR = PERSON.IDPERSON 
+                                WHERE IDPROJECT="${IDPROJECT}"`;
+
+                    connection.query(sql, (err, result) => { 
+                        if(err) res.status(500).json({message: "Erreur serveur", Error: err});
+
+                        else res.status(200).json({PROJECT : result});
+                    })
+                }
+
+                else res.status(403).json({message : "Ce projet n'appartient pas à cette entreprise ou n'existe pas"});
+            })
+        }
+
+        else res.status(403).json({message : "Vous n'avez pas les droits pour visualiser les projets de cette entreprise"});
+    })
+}
+

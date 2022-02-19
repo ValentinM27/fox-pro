@@ -10,6 +10,7 @@ const auth = require('../middlewares/auth');
 // GET
 router.get ('/test', projectCtrl.test);
 router.get('/enterprise/:identerprise', auth, projectCtrl.getProjectsByIDenterprise);
+router.get('/:identerprise/:idproject', auth, projectCtrl.getProjectByID)
 
 // POST
 router.post('/create/:identerprise', auth, projectCtrl.createProject);
