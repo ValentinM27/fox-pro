@@ -12,6 +12,7 @@ class PersonService {
     logout() {
         if(localStorage.getItem('token') !== null){
             localStorage.removeItem('token');
+            localStorage.removeItem('foxproID');
             return true; 
         } 
         else return false;
@@ -26,11 +27,19 @@ class PersonService {
     }
 
     /**
-     * Permet de résupérer le token de l'utilisateur'
+     * Permet de récupérer le token de l'utilisateur'
      * @returns string : token
      */
     getToken() {
         return localStorage.getItem('token');
+    }
+
+    /**
+     * Permet de récupérer le foxproID de l'utilisateur connecté
+     * @returns string : id de l'utilisateur 
+     */
+    getFoxproID() { 
+        return localStorage.getItem('foxproID');
     }
 
     /**

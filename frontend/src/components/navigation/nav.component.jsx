@@ -48,6 +48,8 @@ const Navigation = () => {
 
                             <Nav.Link href="/search">Rechercher</Nav.Link>
 
+                            <Nav.Link href="/myProjects">Mes projets</Nav.Link>
+
                             <NavDropdown title="Mes entreprises" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/enterprise">Voir mes entreprises</NavDropdown.Item>
                                 <NavDropdown.Item href="/enterprise/create">Créer une nouvelle entreprise</NavDropdown.Item>

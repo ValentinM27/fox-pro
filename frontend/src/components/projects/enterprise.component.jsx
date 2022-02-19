@@ -2,11 +2,12 @@ import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PersonService from '../../services/person.service';
 import link_api from '../../ressources/link_api';
+import projectService from '../../services/project.service';
 
 /**
  * @Component Permet d'afficher les projets d'une entreprise
  */
-const Project_Enterprise = () => {
+const Project_Enterprise = (props) => {
   const [isProjects, setIsProject] = useState(false);
   const [projects, setProjects] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +16,12 @@ const Project_Enterprise = () => {
 
   const queryParams = new URLSearchParams(window.location.search);
   const idEnterprise = queryParams.get("id");
-  const nameEnterprise = queryParams.get("name");
+
+  let nameEnterprise;
+
+  if(queryParams.get("name")) {
+    nameEnterprise = queryParams.get("name");
+  } else nameEnterprise = props.nameEnterprise;
   
   const navigate = useNavigate();
 
@@ -43,52 +49,6 @@ const Project_Enterprise = () => {
   } 
 
   /**
-   * Permet de gérer le style d'affichage du status du projet
-   */
-  const handleProjectStatus = (status) => { 
-    switch(status) { 
-      case 'OPEN' : {
-        return (<div className="alert alert-success w-100" role="alert">
-            En cours
-          </div>
-        )
-      } 
-
-      case 'ABANDONED' : {
-        return (<div className="alert alert-secondary w-100" role="alert">
-            Abandonné
-          </div>
-        )
-      }
-
-      case 'CLOSED' : { return (<div className="alert alert-primary w-100" role="alert">
-            Cloturé
-          </div>
-        )
-      }
-
-      case 'MAINTENANCE' : { return (<div className="alert alert-warning w-100" role="alert">
-            En maintenance
-          </div>
-        )
-      }
-
-      case 'SUSPENDED' : { return (<div className="alert alert-danger w-100" role="alert">
-            Suspendu
-          </div>
-        )
-      }
-
-      default: { 
-        return (<div className="alert alert-danger" role="alert">
-            Status de projet non défini
-          </div>
-        )
-      }
-    }
-  }
-
-  /**
    * Permet de supprimer un projet via son id
    */
   const handleOnDelete = (idproject) => {
@@ -109,6 +69,17 @@ const Project_Enterprise = () => {
         setLoading(false);
       }
     });
+  }
+
+  /**
+   * Permet de consulter un projet via son id
+   * @param {*} idproject 
+   */
+  const handleOnConsult = (idproject) => { 
+    navigate({
+      pathname: '/project/consult',
+      search: `?id=` + idEnterprise + '&name=' + nameEnterprise + '&idP=' + idproject
+    })
   }
 
   if(loading) { 
@@ -174,11 +145,11 @@ const Project_Enterprise = () => {
                                 </div>
 
                                 <div className="w-75 margin-top">
-                                  {handleProjectStatus(project.STATUT)}
+                                  {projectService.handleProjectStatus(project.STATUT)}
                                 </div>
 
                                 <div className=" d-flex mt-2"> 
-                                  <button className="btn1 btn-dark">Consulter</button>
+                                  <button onClick={() => handleOnConsult(project.IDPROJECT)} className="btn1 btn-dark">Consulter</button>
                                   <button onClick={() => handleOnDelete(project.IDPROJECT)} className="btn1 btn-dark red space">Supprimer</button> 
                                 </div>
                             </div>

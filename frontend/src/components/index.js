@@ -9,3 +9,4 @@ export { default as ConsultEnterprise } from './enterprises/consult.component.js
 export { default as DetailEnterprise } from './enterprises/details.component.jsx';
 export { default as ListProject } from './projects/projectlist.component.jsx';
 export { default as CreateProject } from './projects/create.component.jsx';
+export { default as ConsultProject } from './projects/detail.component.jsx';
