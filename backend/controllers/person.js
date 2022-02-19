@@ -63,7 +63,7 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
     const {EMAIL, PASSWORD_P} = req.body;
 
-    connection.query(`SELECT IDPERSON, PASSWORD_P FROM PERSON WHERE EMAIL = "${EMAIL}"`, (err, results) => {
+    connection.query(`SELECT IDPERSON, ID_PERSON_, PASSWORD_P FROM PERSON WHERE EMAIL = "${EMAIL}"`, (err, results) => {
         
         if(results.length !== 0){
             bcrypt.compare(PASSWORD_P, results[0].PASSWORD_P)
@@ -73,6 +73,7 @@ exports.login = (req, res) => {
                 } else {
                     res.status(200).json({
                         message : "Connexion réussie",
+                        ID_PERSON_ : results[0].ID_PERSON_,
                         token : jwt.sign(
                             {IDPERSON : results[0].IDPERSON}, 
                             JWT_SECRET_TOKEN_,

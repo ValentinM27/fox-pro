@@ -44,6 +44,7 @@ const Login = () => {
                 if(response.status === 200) {
                     response.json().then((data) => {
                         localStorage.setItem("token", data.token);
+                        localStorage.setItem("foxproID", data.ID_PERSON_);
                         navigate('/');
                     })
                 }

@@ -43,8 +43,6 @@ const Detail_project = () => {
                         foxproID : data.PROJECT[0].ID_PERSON_
                     }
 
-                    console.log(dataSet)
-
                     setProject(dataSet);
                     setLoading(false);
                 })
@@ -77,6 +75,23 @@ const Detail_project = () => {
                 setLoading(false);
             }
         });
+    }
+
+    const getOptions = () => {
+        if(personService.getFoxproID() === project.foxproID){
+            return (
+                <div className=" d-flex mt-2"> 
+                    <button onClick={() => {}} className="btn1 btn-dark">Modifier</button> 
+                    {isDelete ? (
+                        <button onClick={() => handleOnDelete(project.idproject)} className="btn1 btn-dark orange space">Confirmer</button> 
+                    ) 
+                    : 
+                    (
+                        <button onClick={() => setDelete(true)} className="btn1 btn-dark red space">Supprimer</button> 
+                    )}
+                </div>
+            )    
+        }
     }
 
     if(loading) {
@@ -118,16 +133,7 @@ const Detail_project = () => {
                                 <div className="w-75 margin-top">
                                     {projectService.handleProjectStatus(project.status)}
                                 </div>
-
-                                <div className=" d-flex mt-2"> 
-                                    {isDelete ? (
-                                        <button onClick={() => handleOnDelete(project.idproject)} className="btn1 btn-dark orange">Confimer</button> 
-                                    ) 
-                                    : 
-                                    (
-                                        <button onClick={() => setDelete(true)} className="btn1 btn-dark red">Supprimer</button> 
-                                    )}
-                                </div>
+                                {getOptions()}
                             </div>
                         </div>
                     </div>
