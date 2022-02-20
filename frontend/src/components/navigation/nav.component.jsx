@@ -89,7 +89,7 @@ const Navigation = () => {
                                 </NavDropdown.Item>
                             </NavDropdown>
 
-                            <Nav.Link href="/myProjects">Mes projets</Nav.Link>
+                            <Nav.Link href="/myProjects">Membre</Nav.Link>
 
                             <NavDropdown title="Mes entreprises" id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/enterprise">Voir mes entreprises</NavDropdown.Item>

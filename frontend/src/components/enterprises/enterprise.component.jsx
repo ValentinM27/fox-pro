@@ -43,11 +43,27 @@ const Enterprise = (props) => {
         });
     }
 
+    const handleOption = () => {
+        if(String(props.ID_PERSON_) === String(personService.getFoxproID())) {
+            return (
+                <div>
+                    {!isDelete ? (
+                        <button onClick={() => setDelete(true)} className="btn1 btn-dark red space">Supprimer</button> 
+                    ) 
+                    : 
+                    (
+                        <button onClick={() => handleDelete(props.IDENTERPRISE)} className="btn1 btn-dark orange space">Confirmer</button> 
+                    )}
+                </div>
+            )
+        }
+    }
+ 
     /**
      * Permet de gérer l'affichage du boutton addEnterprise
      */
     const addToEnterprise = () => {
-        if(props.foxproID !== null && props.foxproID.length > 0) {
+        if(props.foxproID !== null && props.foxproID !== undefined && props.foxproID.length > 0) {
             return (
                 <button onClick={() => handleAdd()} className="btn1 btn-dark orange margin-top">Ajouter {props.foxproID}</button> 
             )
@@ -89,13 +105,7 @@ const Enterprise = (props) => {
                     <div className=" d-flex mt-2"> 
                         <button onClick={() => GoToDetails(props.IDENTERPRISE)} className="btn1 btn-dark">Consulter</button> 
 
-                        {!isDelete ? (
-                            <button onClick={() => setDelete(true)} className="btn1 btn-dark red space">Supprimer</button> 
-                        ) 
-                        : 
-                        (
-                            <button onClick={() => handleDelete(props.IDENTERPRISE)} className="btn1 btn-dark orange space">Confirmer</button> 
-                        )}
+                        {handleOption()}
                     </div>
                     {addToEnterprise()}
                 </div>

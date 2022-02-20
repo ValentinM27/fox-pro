@@ -62,7 +62,6 @@ const Detail_Enterprise = () => {
 
     /**
      * Permet d'aller au @Component pour créer un projet
-     * @TODO
      */
     const handleCreateProject = () => {
         navigate({
@@ -92,7 +91,7 @@ const Detail_Enterprise = () => {
                     <div className="d-flex flex-column bd-highlight mb-3">
 
                         <div className=" w-75 p-2 bd-highlight centered">
-                            <h2>Vos projets</h2>
+                            <h2>Projets</h2>
                             <button className="btn1 btn-dark space" onClick={() => handleFocusOnProjects()}>Voir les projets</button>
                             <button className="btn1 btn-dark space" onClick={() => handleCreateProject()}>Créer un nouveau projet</button>
                             <hr />
@@ -104,7 +103,7 @@ const Detail_Enterprise = () => {
                         <hr />
 
                         <div className="w-75 p-2 bd-highlight centered">
-                            <h2>Vos employés</h2>
+                            <h2>Employés</h2>
                             <div className="scrollable-div">
                                 <Employees />
                             </div>
