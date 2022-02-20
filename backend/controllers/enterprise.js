@@ -59,8 +59,9 @@ exports.getByID = (req, res) => {
 exports.getByCurrentUser = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
 
-    const sql = `SELECT IDENTERPRISE, NAME_ENTERPRISE, DESCRIPTION_ENT
-                FROM ENTERPRISE WHERE IDOWNER = '${IDPERSON}'`;
+    const sql = `SELECT IDENTERPRISE, NAME_ENTERPRISE, DESCRIPTION_ENT, ID_PERSON_
+                FROM ENTERPRISE INNER JOIN PERSON ON ENTERPRISE.IDOWNER = PERSON.IDPERSON
+                WHERE IDOWNER = '${IDPERSON}'`;
 
     connection.query(sql, (err, results) => {
         if (err) res.status(500).json({message : "Erreur serveur", Erreur : err});
@@ -169,30 +170,31 @@ exports.delete = (req, res) => {
  */
 exports.addToEnterprise = (req, res) => {
     const IDPERSON = res.locals.IDPERSON;
-    const IDENTERPRISE = req.body.IDENTERPRISE;
+    const IDENTERPRISE = req.params.identerprise;
 
-    const sql =  `SELECT IS_PM, IS_ADMIN FROM IS_PART_OF WHERE IDPERSON = "${IDPERSON}" AND IDENTERPRISE="${IDENTERPRISE}"`;
+    const sql = `(SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
 
     // Vérification du statut de la personne précédant à l'opération
     connection.query(sql, (err, result) => {
+       
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
         
-        else if (result === undefined || result.length === 0) res.status(403).json({message : "Vous ne faite pas partie de cette entreprise !"});
-
-        else if (result[0].IS_PM === 0 && result[0].IS_ADMIN === 0) res.status(403).json({message : "Vous devez être administrateur ou chef de projet pour ajouter des employés à l'entreprise"});
+        else if (result === undefined || result.length === 0) res.status(403).json({message : "Vous n'êtes pas gestionnaire de cette entreprise !"});
 
         else {
-            const {ID_PERSON_, IS_PM, IS_ADMIN} = req.body;
+            const {ID_PERSON_} = req.body;
 
             const sql = `SELECT IDPERSON FROM PERSON WHERE ID_PERSON_ = '${ID_PERSON_}'`;
 
             connection.query(sql, (err, result) => {
+             
                 if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
                 else if (result === undefined || result.length === 0) res.status(404).json({message : "Utilisateur inexistant"});
 
                 else {
-                    const sql = `SELECT IDPERSON, IDENTERPRISE FROM IS_PART_OF WHERE IDPERSON = '${IDPERSON}' AND IDENTERPRISE = '${IDENTERPRISE}'`;
+                    const IDPERSON_toADD = result[0].IDPERSON;
+                    const sql = `SELECT IDPERSON, IDENTERPRISE FROM IS_PART_OF WHERE IDPERSON = '${IDPERSON_toADD}' AND IDENTERPRISE = '${IDENTERPRISE}'`;
 
                     connection.query(sql, (err, result) => {
                         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
@@ -200,7 +202,7 @@ exports.addToEnterprise = (req, res) => {
                         else if (result !== undefined && result.length !== 0) res.status(403).json({message : "La personne à ajouter est déjà membre de l'entreprise !"})
 
                         else {
-                            const sql = `INSERT INTO IS_PART_OF (IDPERSON, IDENTERPRISE, IS_PM , IS_ADMIN) VALUES ("${result[0].IDPERSON}", "${IDENTERPRISE}", "${IS_PM}", "${IS_ADMIN}")`;
+                            const sql = `INSERT INTO IS_PART_OF (IDPERSON, IDENTERPRISE) VALUES ("${IDPERSON_toADD}", "${IDENTERPRISE}")`;
 
                             connection.query(sql, (err) => {
                                 if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
@@ -212,5 +214,28 @@ exports.addToEnterprise = (req, res) => {
                 }
             })
         }
+    })
+}
+
+/**
+ * Permet de récupérer les entreprises dans lesquelles est l'utilisateur connecté
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getEnterprisesIn = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+
+    const sql = `SELECT ENTERPRISE.IDENTERPRISE, NAME_ENTERPRISE, DESCRIPTION_ENT, ID_PERSON_
+                FROM ENTERPRISE INNER JOIN IS_PART_OF 
+                ON ENTERPRISE.IDENTERPRISE = IS_PART_OF.IDENTERPRISE
+                INNER JOIN PERSON ON ENTERPRISE.IDOWNER = PERSON.IDPERSON
+                WHERE IS_PART_OF.IDPERSON = '${IDPERSON}'`
+    
+    connection.query(sql, (err, result) => {
+        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+        else if (result === undefined || result.length === 0) res.status(404).json({message : "Vous n'êtes dans aucunes entreprises"});
+
+        else res.status(200).json({ENTERPRISES : result});
     })
 }

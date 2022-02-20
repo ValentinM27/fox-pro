@@ -213,12 +213,9 @@ exports.updateUser = (req, res) => {
 exports.searchUser = (req, res) => {
     const name = req.params.name;
 
-    const _name_Array = name.split(' ');
-
     const sql = `SELECT LASTNAME_P, FIRSTNAME_P, EMAIL, ID_PERSON_
             FROM PERSON
-            WHERE LASTNAME_P = "${_name_Array[0]}" OR FIRSTNAME_P = "${_name_Array[1]}"
-            OR LASTNAME_P = "${_name_Array[1]}" OR FIRSTNAME_P = "${_name_Array[0]}"`;
+            WHERE ID_PERSON_ LIKE "%${name}%"`
 
     connection.query(sql, (err, results) => {
         if(err) return res.status(500).json({message : "Erreur serveur", Erreur : err});

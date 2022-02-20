@@ -35,12 +35,62 @@ const Enterprise = (props) => {
                 window.location.reload(false);
             } else {
                 if(response.status === 500) { 
-                response.json().then((data) => {
-                    alert(data.message);
-                })
+                    response.json().then((data) => {
+                        alert(data.message);
+                    })
                 }
             }
         });
+    }
+
+    const handleOption = () => {
+        if(String(props.ID_PERSON_) === String(personService.getFoxproID())) {
+            return (
+                <div>
+                    {!isDelete ? (
+                        <button onClick={() => setDelete(true)} className="btn1 btn-dark red space">Supprimer</button> 
+                    ) 
+                    : 
+                    (
+                        <button onClick={() => handleDelete(props.IDENTERPRISE)} className="btn1 btn-dark orange space">Confirmer</button> 
+                    )}
+                </div>
+            )
+        }
+    }
+ 
+    /**
+     * Permet de gérer l'affichage du boutton addEnterprise
+     */
+    const addToEnterprise = () => {
+        if(props.foxproID !== null && props.foxproID !== undefined && props.foxproID.length > 0) {
+            return (
+                <button onClick={() => handleAdd()} className="btn1 btn-dark orange margin-top">Ajouter {props.foxproID}</button> 
+            )
+        }
+    }
+
+    const handleAdd = () => {
+        const person = {ID_PERSON_ : props.foxproID};
+
+        fetch(link_api + 'enterprise/join/' + props.IDENTERPRISE, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', authorization : personService.getToken()},
+            body : JSON.stringify(person)
+        })
+        .then((response) => {
+            if(response.status === 200) {
+                alert('Vous avez ajouté '+props.foxproID+' à '+props.NAME_ENTERPRISE);
+                navigate({
+                    pathname: '/enterprise/consult',
+                    search: `?id=` + props.IDENTERPRISE,
+                });
+            } else {
+                response.json().then((data) => {
+                    alert(data.message);
+                })
+            }
+        })
     }
 
     return (
@@ -55,14 +105,9 @@ const Enterprise = (props) => {
                     <div className=" d-flex mt-2"> 
                         <button onClick={() => GoToDetails(props.IDENTERPRISE)} className="btn1 btn-dark">Consulter</button> 
 
-                        {!isDelete ? (
-                            <button onClick={() => setDelete(true)} className="btn1 btn-dark red space">Supprimer</button> 
-                        ) 
-                        : 
-                        (
-                            <button onClick={() => handleDelete(props.IDENTERPRISE)} className="btn1 btn-dark orange space">Confirmer</button> 
-                        )}
+                        {handleOption()}
                     </div>
+                    {addToEnterprise()}
                 </div>
             </div>
         </div>

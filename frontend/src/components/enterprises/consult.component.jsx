@@ -12,6 +12,9 @@ const Consult_Enterprise = () => {
     const [enterprises, setEnterprises] = useState(null);
     const [apiErrors, setApiErrors] = useState(null);
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const foxproID = queryParams.get("foxproID");
+
     const fetchData = async() => {
         fetch(link_api + 'enterprise/retrieve', {
             method: 'GET',
@@ -36,7 +39,7 @@ const Consult_Enterprise = () => {
         fetchData();
         return (
             <div className="col-md-12 text-center">   
-                <div className="spinner-border text-warning" role="status"></div>
+                <div className="spinner-border text-warning" role="status"/>
             </div>       
         )
     } else {
@@ -56,7 +59,7 @@ const Consult_Enterprise = () => {
                 {enterprises !== null && enterprises.map(enterprise => {
                     return (
                         <div key={enterprise.IDENTERPRISE}>
-                            <Enterprise  IDENTERPRISE={enterprise.IDENTERPRISE} NAME_ENTERPRISE={enterprise.NAME_ENTERPRISE} DESCRIPTION_ENT={enterprise.DESCRIPTION_ENT}/>
+                            <Enterprise ID_PERSON_={enterprise.ID_PERSON_} foxproID={foxproID} IDENTERPRISE={enterprise.IDENTERPRISE} NAME_ENTERPRISE={enterprise.NAME_ENTERPRISE} DESCRIPTION_ENT={enterprise.DESCRIPTION_ENT}/>
                         </div>
                     )
                 })}

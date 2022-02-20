@@ -5,19 +5,14 @@ import { useNavigate } from 'react-router-dom';
  * @Component : Permet d'afficher les employés d'une entreprise
  */
 const Enterprise_employees = () => {
-  const [isProjects, setIsProject] = useState(false);
-
+  const [isEmployees, setIsEmployees] = useState(false);
   const navigate = useNavigate();
   
-  if (!isProjects) {
+  if (!isEmployees) {
     return (
       <div>
         <div className="alert alert-warning" role="alert">
-          Vous n'avez actuellement aucuns employés
-        </div>
-
-        <div className="col-md-12 text-center">
-          <button onClick={() => {navigate('/enterprise/employees')}}>Ajouter des employés</button>
+          Vous n'avez actuellement aucuns employés, effectuez une recherche puis cliquez sur <i>'Ajouter à une entreprise'</i>
         </div>
       </div>
     ) 

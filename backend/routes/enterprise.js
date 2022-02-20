@@ -12,10 +12,11 @@ router.get('/test', enterpriseCtrl.test);
 router.get('/id/:identerprise', enterpriseCtrl.getByID);
 router.get('/retrieve', auth, enterpriseCtrl.getByCurrentUser);
 router.get('/user/:user', enterpriseCtrl.getByID_PERSON_);
+router.get('/ispart', auth, enterpriseCtrl.getEnterprisesIn);
 
 // POST
 router.post('/create', auth, enterpriseCtrl.create);
-router.post('/join', auth, enterpriseCtrl.addToEnterprise);
+router.post('/join/:identerprise', auth, enterpriseCtrl.addToEnterprise);
 
 // UPDATE OVER POST
 router.post('/update/:identerprise', auth, enterpriseCtrl.update);
