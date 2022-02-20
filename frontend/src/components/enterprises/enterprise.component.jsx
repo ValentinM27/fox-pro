@@ -35,12 +35,46 @@ const Enterprise = (props) => {
                 window.location.reload(false);
             } else {
                 if(response.status === 500) { 
-                response.json().then((data) => {
-                    alert(data.message);
-                })
+                    response.json().then((data) => {
+                        alert(data.message);
+                    })
                 }
             }
         });
+    }
+
+    /**
+     * Permet de gérer l'affichage du boutton addEnterprise
+     */
+    const addToEnterprise = () => {
+        if(props.foxproID !== null && props.foxproID.length > 0) {
+            return (
+                <button onClick={() => handleAdd()} className="btn1 btn-dark orange margin-top">Ajouter {props.foxproID}</button> 
+            )
+        }
+    }
+
+    const handleAdd = () => {
+        const person = {ID_PERSON_ : props.foxproID};
+
+        fetch(link_api + 'enterprise/join/' + props.IDENTERPRISE, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', authorization : personService.getToken()},
+            body : JSON.stringify(person)
+        })
+        .then((response) => {
+            if(response.status === 200) {
+                alert('Vous avez ajouté '+props.foxproID+' à '+props.NAME_ENTERPRISE);
+                navigate({
+                    pathname: '/enterprise/consult',
+                    search: `?id=` + props.IDENTERPRISE,
+                });
+            } else {
+                response.json().then((data) => {
+                    alert(data.message);
+                })
+            }
+        })
     }
 
     return (
@@ -63,6 +97,7 @@ const Enterprise = (props) => {
                             <button onClick={() => handleDelete(props.IDENTERPRISE)} className="btn1 btn-dark orange space">Confirmer</button> 
                         )}
                     </div>
+                    {addToEnterprise()}
                 </div>
             </div>
         </div>

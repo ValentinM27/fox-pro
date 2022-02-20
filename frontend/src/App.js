@@ -1,4 +1,4 @@
-import {Home, Register, Login, Navigation, Notfound, Profil, CreateEnterprise, ConsultEnterprise, DetailEnterprise, ListProject, CreateProject, ConsultProject} from './components/index';
+import {Home, Register, Login, Navigation, Notfound, Profil, CreateEnterprise, ConsultEnterprise, DetailEnterprise, ListProject, CreateProject, ConsultProject, Search} from './components/index';
 import './styles/App.scss';
 import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import personService from './services/person.service';
@@ -29,6 +29,7 @@ function App() {
           <Route path='/projects' element={<ListProject />} />
           <Route path='/project/create' element={<CreateProject />} />
           <Route path='/project/consult' element={<ConsultProject />} />
+          <Route path='/search' element={<Search />} />
         </Routes>
       </Router>
     </div>

@@ -30,10 +30,12 @@ const Navigation = () => {
      * Permet d'effectuer une recherche
      */
     const handleSearch = () => {
+        setShow(false);
         navigate({
             pathname: '/search',
             search: `?q=` + value.q
         })
+        window.location.reload();
     }
 
     /**
@@ -73,7 +75,7 @@ const Navigation = () => {
                                         <input 
                                             className="form-control mr-sm-2"
                                             onChange={ handleChange } 
-                                            type="search" placeholder="Rechercher des personnes ..." 
+                                            type="search" placeholder="Tapez un FoxProID ..."
                                             aria-label="Search" 
                                             name="q"
                                             value={value.q}
