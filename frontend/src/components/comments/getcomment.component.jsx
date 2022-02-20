@@ -63,7 +63,7 @@ const Get_Comments = () => {
                                 <Comment idcomment={comment.IDCOMMENT} firstname={comment.FIRSTNAME_P} lastname={comment.LASTNAME_P} content={comment.CONTENT_COMMENT} postDate={comment.POST_DATE_COMMENT} foxproId={comment.ID_PERSON_}/>
                             </div>
                         )
-                    })}
+                    }).reverse()}
                 </div>)}  
             </div>
         )
