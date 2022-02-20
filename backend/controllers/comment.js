@@ -24,9 +24,9 @@ exports.createComment = (req, res) => {
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
         else if (result !== undefined && result.length !== 0) {
-            const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
+            const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${result[0].IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
                         UNION
-                        (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
+                        (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${result[0].IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
             
             connection.query(sql, (err, result) => {
                 if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});

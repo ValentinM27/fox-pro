@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import link_api from '../../ressources/link_api'
 import personService from '../../services/person.service.js';
-import Comment from './comment.composant.jsx'
+import Comment from './comment.component.jsx'
+import CreateComment from './createcomment.component.jsx';
 
 /**
  * @Component : Permet de gérer les commentaires 
@@ -55,6 +56,7 @@ const Get_Comments = () => {
                 ) 
                 : 
                 (<div>
+                    <CreateComment />
                     {comments !== null && comments.map(comment => {
                         return (
                             <div key={comment.IDCOMMENT}>
