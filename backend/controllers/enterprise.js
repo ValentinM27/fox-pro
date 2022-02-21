@@ -35,7 +35,7 @@ exports.getByID = (req, res) => {
     const IDENTERPRISE = req.params.identerprise;
 
     const sql = `SELECT IDENTERPRISE, NAME_ENTERPRISE, DESCRIPTION_ENT,
-            LASTNAME_P, FIRSTNAME_P, EMAIL
+            LASTNAME_P, FIRSTNAME_P, EMAIL, ID_PERSON_
             FROM ENTERPRISE 
             INNER JOIN PERSON ON ENTERPRISE.IDOWNER = PERSON.IDPERSON
             WHERE IDENTERPRISE = "${IDENTERPRISE}"`;
@@ -237,5 +237,94 @@ exports.getEnterprisesIn = (req, res) => {
         else if (result === undefined || result.length === 0) res.status(404).json({message : "Vous n'êtes dans aucunes entreprises"});
 
         else res.status(200).json({ENTERPRISES : result});
+    })
+}
+
+/**
+ * Permet de récupérer les employés d'une entreprise de l'utilisateur
+ * connecté via identerprise
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getEmployees = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+    const IDENTERPRISE = req.params.identerprise;
+
+    const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
+                UNION
+                (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
+    
+    connection.query(sql, (err, result) => {
+        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+        else if (result !== undefined || result.length !== 0) {
+            const sql = `SELECT FIRSTNAME_P, LASTNAME_P, ID_PERSON_, EMAIL FROM
+                        IS_PART_OF INNER JOIN ENTERPRISE ON IS_PART_OF.IDENTERPRISE = ENTERPRISE.IDENTERPRISE
+                        INNER JOIN PERSON ON IS_PART_OF.IDPERSON = PERSON.IDPERSON 
+                        WHERE IS_PART_OF.IDENTERPRISE="${IDENTERPRISE}}"`
+
+            connection.query(sql, (err, result) => {
+                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                else if (result !== undefined || result.length !== 0) {
+                    res.status(200).json({EMPLOYEES : result});
+                }
+
+                else res.status(404).json({message : "Il n'y personne dans votre entreprise"});
+            })
+        }
+
+        else res.status(404).json({message : "Vous n'avez pas les droits pour visualiser les employés de cette entreprise"});
+    })
+}
+
+/**
+ * Permet de supprimer un employé d'une entreprise
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.deleteFromEnt = (req, res) => {
+    const IDPERSON = res.locals.IDPERSON;
+    const IDENTERPRISE = req.params.identerprise;
+    const ID_EMP_ = req.params.idemp;
+
+    const sql = `(SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
+
+    connection.query(sql, (err, result) => {
+        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+        else if(result !== undefined || result.length !== 0) {
+            const sql = `SELECT IDPERSON FROM PERSON WHERE ID_PERSON_ = '${ID_EMP_}'`;
+
+            connection.query(sql, (err, result) => {
+             
+                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                else if (result === undefined || result.length === 0) res.status(404).json({message : "Utilisateur inexistant"});
+
+                else {
+                    const IDPERSON_toDEL = result[0].IDPERSON;
+                    const sql = `SELECT IDPERSON, IDENTERPRISE FROM IS_PART_OF WHERE IDPERSON = '${IDPERSON_toDEL}' AND IDENTERPRISE = '${IDENTERPRISE}'`;
+
+                    connection.query(sql, (err, result) => {
+                        if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                        else if (result === undefined || result.length === 0) res.status(403).json({message : "La personne à supprimer n'est pas membre de l'entreprise !"})
+
+                        else {
+                            const sql = `DELETE FROM IS_PART_OF WHERE IDENTERPRISE = '${IDENTERPRISE}' AND IDPERSON="${IDPERSON_toDEL}"`;
+
+                            connection.query(sql, (err) => {
+                                if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
+
+                                else res.status(200).json({message : "Membre supprimé !"});
+                            })  
+                        }
+                    })
+                }
+            })
+        }
+
+        else res.status(403).json({message : "Vous n'êtes pas le propriétaire de l'entreprise, vous ne pouvez pas supprimer un employé"})
     })
 }

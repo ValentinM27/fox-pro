@@ -13,6 +13,7 @@ router.get('/id/:identerprise', enterpriseCtrl.getByID);
 router.get('/retrieve', auth, enterpriseCtrl.getByCurrentUser);
 router.get('/user/:user', enterpriseCtrl.getByID_PERSON_);
 router.get('/ispart', auth, enterpriseCtrl.getEnterprisesIn);
+router.get('/employees/:identerprise', auth, enterpriseCtrl.getEmployees);
 
 // POST
 router.post('/create', auth, enterpriseCtrl.create);
@@ -23,5 +24,6 @@ router.post('/update/:identerprise', auth, enterpriseCtrl.update);
 
 // DELETE 
 router.delete('/delete/:identerprise', auth, enterpriseCtrl.delete);
+router.delete('/employees/delete/:identerprise/:idemp', auth, enterpriseCtrl.deleteFromEnt);
 
 module.exports = router;
