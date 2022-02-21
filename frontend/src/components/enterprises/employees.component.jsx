@@ -1,14 +1,40 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import link_api from '../../ressources/link_api';
+import personService from '../../services/person.service';
+import Person from '../person/person.component.jsx'
 
 /**
  * @Component : Permet d'afficher les employés d'une entreprise
  */
-const Enterprise_employees = () => {
+const Enterprise_employees = (props) => {
   const [isEmployees, setIsEmployees] = useState(false);
-  const navigate = useNavigate();
-  
+  const [employees, setEmployees] = useState(null);
+  const [apiErrors, setApiErrors] = useState(null);
+
+  const queryParams = new URLSearchParams(window.location.search);
+  const idEnterprise = queryParams.get("id");
+
+  const fetchData = () => {
+    fetch(link_api + 'enterprise/employees/' + idEnterprise, { 
+      method: 'GET',
+      headers: {  'Content-Type': 'application/json', authorization: personService.getToken() }
+    })
+    .then((response) => {
+      if(response.status === 200) {
+        response.json().then((data) => {
+          setEmployees(data.EMPLOYEES);
+          setIsEmployees(true);
+        })
+      } else {
+        response.json().then((data) => {
+          setApiErrors(data.message);
+        })
+      }
+    })
+  }
+
   if (!isEmployees) {
+    fetchData();
     return (
       <div>
         <div className="alert alert-warning" role="alert">
@@ -18,7 +44,15 @@ const Enterprise_employees = () => {
     ) 
   } else {
     return (
-      <div>Hello world !</div>
+      <div>
+        {employees !== null && employees.map(person => {
+            return (
+                <div key={person.ID_PERSON_}>
+                  <Person fromEnt={true} foxproID={person.ID_PERSON_} ID_PERSON_={props.ID_PERSON_} lastname={person.LASTNAME_P} firstname={person.FIRSTNAME_P} email={person.EMAIL}/>
+                </div>
+            )
+        })}
+      </div>
     )
   }
 }

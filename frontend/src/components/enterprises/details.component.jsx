@@ -35,8 +35,9 @@ const Detail_Enterprise = () => {
                         name : data.ENTERPRISE[0].NAME_ENTERPRISE,
                         description : data.ENTERPRISE[0].DESCRIPTION_ENT,
                         lastname : data.ENTERPRISE[0].LASTNAME_P,
-                        firstname : data.ENTERPRISE[0].FIRSTNAME_P
-                    }  
+                        firstname : data.ENTERPRISE[0].FIRSTNAME_P,
+                        ID_PERSON_ : data.ENTERPRISE[0].ID_PERSON_
+                    }
                     
                     setEnterprises(dataSet);
                     setLoading(false);
@@ -105,7 +106,7 @@ const Detail_Enterprise = () => {
                         <div className="w-75 p-2 bd-highlight centered">
                             <h2>Employés</h2>
                             <div className="scrollable-div">
-                                <Employees />
+                                <Employees ID_PERSON_={enterprise.ID_PERSON_}/>
                             </div>
                         </div>
                         

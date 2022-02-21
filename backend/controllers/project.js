@@ -138,8 +138,8 @@ exports.getProjectByID = (req, res) => {
     const IDPROJECT = req.params.idproject;
 
     const sql = `(SELECT IDPERSON FROM IS_PART_OF WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDPERSON="${IDPERSON}")
-    UNION
-    (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
+                UNION
+                (SELECT IDOWNER FROM ENTERPRISE WHERE IDENTERPRISE="${IDENTERPRISE}" AND IDOWNER="${IDPERSON}")`;
 
     connection.query(sql, (err, result) => {
         if(err) res.status(500).json({message: "Erreur serveur", Error: err});
