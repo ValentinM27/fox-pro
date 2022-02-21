@@ -257,7 +257,7 @@ exports.getEmployees = (req, res) => {
     connection.query(sql, (err, result) => {
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
-        else if (result !== undefined || result.length !== 0) {
+        else if (result !== undefined && result.length !== 0) {
             const sql = `SELECT FIRSTNAME_P, LASTNAME_P, ID_PERSON_, EMAIL FROM
                         IS_PART_OF INNER JOIN ENTERPRISE ON IS_PART_OF.IDENTERPRISE = ENTERPRISE.IDENTERPRISE
                         INNER JOIN PERSON ON IS_PART_OF.IDPERSON = PERSON.IDPERSON 
@@ -266,7 +266,7 @@ exports.getEmployees = (req, res) => {
             connection.query(sql, (err, result) => {
                 if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
-                else if (result !== undefined || result.length !== 0) {
+                else if (result !== undefined && result.length !== 0) {
                     res.status(200).json({EMPLOYEES : result});
                 }
 
@@ -293,7 +293,7 @@ exports.deleteFromEnt = (req, res) => {
     connection.query(sql, (err, result) => {
         if(err) res.status(500).json({message : "Erreur serveur", Erreur : err});
 
-        else if(result !== undefined || result.length !== 0) {
+        else if(result !== undefined && result.length !== 0) {
             const sql = `SELECT IDPERSON FROM PERSON WHERE ID_PERSON_ = '${ID_EMP_}'`;
 
             connection.query(sql, (err, result) => {

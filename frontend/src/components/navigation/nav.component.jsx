@@ -75,7 +75,7 @@ const Navigation = () => {
                                         <input 
                                             className="form-control mr-sm-2"
                                             onChange={ handleChange } 
-                                            type="search" placeholder="Tapez un FoxProID ..."
+                                            type="search" placeholder="Tapez un nom ..."
                                             aria-label="Search" 
                                             name="q"
                                             value={value.q}
