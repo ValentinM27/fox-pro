@@ -104,7 +104,7 @@ const Project_Enterprise = (props) => {
           (
             <div>
               <div className="alert alert-warning" role="alert">
-                Vous n'avez actuellement aucuns projets 
+                Vous n'avez actuellement aucun projet 
               </div>
       
               <div className="col-md-12 text-center">
