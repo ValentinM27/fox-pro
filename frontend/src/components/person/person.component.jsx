@@ -63,9 +63,7 @@ const Person = (props) => {
 
                 {props.isSearch ? (
                   <button onClick={() => addToEnterprise(true)} className="btn1 btn-dark">Ajouter à une entreprise</button> 
-                ) : null}
-
-                {handleSuppression()}
+                ) : handleSuppression()}
 
             </div>
         </div>
