@@ -61,7 +61,7 @@ const Search = () => {
                 {persons !== null && persons.map(person => {
                     return (
                         <div key={person.ID_PERSON_}>
-                            <Person isSearch={false} foxproID={person.ID_PERSON_} lastname={person.LASTNAME_P} firstname={person.FIRSTNAME_P} email={person.EMAIL}/>
+                            <Person isSearch={true} foxproID={person.ID_PERSON_} lastname={person.LASTNAME_P} firstname={person.FIRSTNAME_P} email={person.EMAIL}/>
                         </div>
                     )
                 })}

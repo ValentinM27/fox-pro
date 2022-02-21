@@ -23,7 +23,7 @@ const Enterprise_employees = (props) => {
       if(response.status === 200) {
         response.json().then((data) => {
           setEmployees(data.EMPLOYEES);
-          setIsEmployees(true);
+          if(employees.length > 0) setIsEmployees(true);
         })
       } else {
         response.json().then((data) => {
