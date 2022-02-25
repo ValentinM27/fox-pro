@@ -7,6 +7,11 @@ html {
     min-height: 100%;
 }
 
+body {
+    animation : opacity;
+    animation-duration : .5s;
+}
+
 .scrollable-div {
     overflow: auto;
 
@@ -105,3 +110,17 @@ button {
 .resize-none {
     resize: none;
 }
+
+.margin-bottom {
+    margin-bottom: 15px;
+}
+
+@keyframes opacity {
+    from {
+        opacity: 0.2;
+    }
+    to {
+        opacity: 1;
+    }
+}
+

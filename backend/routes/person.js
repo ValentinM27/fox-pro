@@ -18,6 +18,8 @@ router.get('/search/name/:name', personCtrl.searchUser);
 // POST
 router.post('/register', testPassword, idPersonGenerator, uuidGenerator, personCtrl.register);
 router.post('/login', personCtrl.login);
+router.post('/password/reset/req', personCtrl.handleReqResetPassword);
+router.post('/password/reset', testPassword, personCtrl.handleResetPassword)
 
 // UPDATE OVER POST
 router.post('/password/update', testPassword, auth, personCtrl.changePassword);

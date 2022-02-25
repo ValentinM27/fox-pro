@@ -57,7 +57,6 @@ const Person = (props) => {
                 <h2>{props.firstname} {props.lastname}</h2> 
                 
                 <p>
-                  {props.foxproID}<br />
                   {props.email}
                 </p>
 
