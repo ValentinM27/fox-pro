@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import link_api from '../../ressources/link_api.js';
 import { useNavigate } from "react-router-dom";
+import personService from '../../services/person.service.js'
 
 /**
 * @Component : Permet à l'utilisateur de se connecter 
@@ -9,6 +10,7 @@ const Login = () => {
     const initValue = {email : "", password : ""};
     const [formValues, setFormValues] = useState(initValue);
     const [formErrors, setFormErrors] = useState({});
+    const [reinit, setReinit] = useState(false);
     
     const [apiErrors, setApiErrors] = useState('');
 
@@ -89,7 +91,24 @@ const Login = () => {
      * Permet d'envoyer la demande de réinitialisation du mots de passe
      */
     const handleForgotPassword = () => {
+        const person = {EMAIL : formValues.email};
 
+        fetch(link_api + 'person/password/reset/req', {
+            method : 'POST',
+            headers : { 'Content-Type': 'application/json', authorization: personService.getToken()},
+            body : JSON.stringify(person)
+        })
+        .then((response) => {
+            if(response.status === 200) {
+                alert('Consultez vos mails')
+                window.location.reload(false);
+            } 
+            else {
+                response.json().then((data) => {
+                    alert(data.message)
+                })
+            }
+        })
     }
 
     return (
@@ -122,29 +141,46 @@ const Login = () => {
                     </div>) : <br />
                 }
 
-                <div className="form-group">
-                    <label htmlFor="password">Mot de passe</label>
-                    <input 
-                        type="password" 
-                        name="password"
-                        className="form-control" 
-                        value={ formValues.password }
-                        onChange={ handleChange }
-                    />
-                </div>
-                {/* Gestion de l'affichage des erreurs */}
-                {formErrors.password ? 
-                    (<div className="alert alert-danger" role="alert">
-                    {formErrors.password}
-                    </div>) : <br />
-                }
+                {!reinit ? 
+                (
+                    <div>
+                        <div className="form-group">
+                        <label htmlFor="password">Mot de passe</label>
+                        <input 
+                            type="password" 
+                            name="password"
+                            className="form-control" 
+                            value={ formValues.password }
+                            onChange={ handleChange }
+                        />
+                        </div>
+                        {/* Gestion de l'affichage des erreurs */}
+                        {formErrors.password ? 
+                            (<div className="alert alert-danger" role="alert">
+                            {formErrors.password}
+                            </div>) : <br />
+                        }
+                    </div>
+                )
+                : null }
 
                 <hr />
 
                 <div className="col-md-12 text-center">
                     <div className="form-group">
-                        <button type="submit" className="btn btn-primary">Me connecter</button>
-                        <button onCLicking={() => handleForgotPassword()}className="btn btn-dark orange space">Mot de passe oublié</button>
+                        {!reinit ? (
+                            <div>
+                                <button type="submit" className="btn btn-primary">Me connecter</button>
+                                <button onClick={() => setReinit(true)}className="btn btn-dark orange space">Mot de passe oublié</button>
+                            </div>
+                        ) 
+                        : 
+                        (
+                            <div>
+                                <button onClick={() => handleForgotPassword()}className="btn btn-dark">Réinitialiser</button>
+                                <button onClick={() => setReinit(false)}className="btn btn-dark orange space">Annuler</button>
+                            </div>
+                        )}
                     </div>      
                 </div>
 

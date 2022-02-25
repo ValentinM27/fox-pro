@@ -12,3 +12,4 @@ export { default as CreateProject } from './projects/create.component.jsx';
 export { default as ConsultProject } from './projects/detail.component.jsx';
 export { default as Search } from './search/search.component.jsx';
 export { default as MyProject } from './enterprises/enterpriseEmp/enterpriseEmp.component.jsx';
+export { default as InitPassword } from './person/init.component.jsx';
