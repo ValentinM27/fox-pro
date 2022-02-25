@@ -2,7 +2,7 @@ const connection = require('../database/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET_TOKEN_} = require('../ressources/jwtToken.json');const { connect } = require('../database/db');
-``
+const transporter = require('../packages/mail.js')
 
 /**
  * Permet de tester le controleur 
@@ -223,5 +223,112 @@ exports.searchUser = (req, res) => {
         else if(results === undefined || results.length === 0 || results === null) res.status(404).json({message : "Aucunes personnes ne correspond à votre recherche"});
 
         else res.status(200).json({PERSONS : results});
+    })
+}
+
+/**
+ * Permet d'envoyer un email de demande  réinitialisation de mdp
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.handleReqResetPassword = (req,res) => {
+    const userEmail = req.body.EMAIL;
+    const expirationDate = new Date().toISOString().slice(0, 10);
+
+    let token = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    // Génération du token
+    for ( let i = 0; i < 24 ; i++ ) {
+        token += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    const sql = `INSERT INTO RESETPASSWORD (userEmail, resetTOKEN, expirationDate) 
+                VALUES ("${userEmail}", "${token}", "${expirationDate}")`;
+
+    connection.query(sql, function(err){
+        if(err){
+            res.status(500).json({message : "Request failed"});
+        } else {
+
+            /**
+             * Data de l'email
+             * @type {{subject: string, from: string, html: string, to: *, text: string}}
+             */
+            const mailData = {
+                from: 'sportmate.mail@gmail.com',  // sender address
+                to: userEmail,   // list of receivers
+                subject: 'Changement de mot de passe',
+                text: "Changer votre mot de passe Fox'Pro",
+                html: `<b>Bonjour ! </b> 
+                    <br>Il semblerait que vous vouliez changer de mot de passe !<br/>
+                    <a href=http://localhost:3000/init?token=${token}>Réinitialiser mon mot de passe</a>`
+            }
+
+            /**
+             * Envoie de l'email
+             */
+            transporter.sendMail(mailData, function(err){
+                if(err){
+                    res.status(200).json({message : "Failed to delivered", Erreur : err});
+                } else {
+                    res.status(200).json({message : "Mail envoyé !"});
+                }
+            })
+        }
+    })
+}
+
+
+/**
+ * Permet de réinitialiser le mdp de l'utilisateur
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.handleResetPassword = (req,res) => {
+    const Email = req.body.EMAIL;
+    const TOKEN = req.body.token;
+    const PASSWORD = req.body.PASSWORD_P;
+    const validatePASSWORD = req.body.validatePASSWORD_P;
+
+    const sql = `SELECT userEmail FROM RESETPASSWORD WHERE resetToken = "${TOKEN}" && userEmail = "${Email}"`;
+
+    connection.query(sql, function(err, result){
+
+        if(err){
+            res.status(500).json({message : "Erreur serveur", Erreur : err});
+        }
+
+        else if (result === undefined || result.length === 0){
+            res.status(404).json({message : "Mail non valide ou lien expiré"});
+        }
+
+        else if (result[0].userEmail === Email && PASSWORD === validatePASSWORD ){
+            bcrypt.hash(PASSWORD, 10)
+                .then(hash => {
+                    const sql = `UPDATE PERSON
+                     SET PASSWORD_P = "${hash}"
+                     WHERE EMAIL = "${Email}"`;
+
+                    connection.query(sql, function (err){
+                        if(err) {
+                            res.status(500).json({erreur : err});
+                        } else {
+                            const sql = `DELETE FROM RESETPASSWORD WHERE userEmail = "${Email}" && resetTOKEN = "${TOKEN}"`;
+
+                            connection.query(sql, function(err){
+                                if(err){
+                                    res.status(500).json({message : "Erreur serveur", Erreur : err});
+                                } else {
+                                    res.status(200).json({message : "Mot de passe mis à jour"});
+                                }
+                            })
+                        }
+                    })
+                })
+                .catch(error => res.status(500).json({message : error}))
+        } else {
+            res.status(403).json({message : "Veuillez saisir deux fois le même mot de passe"});
+        }
     })
 }

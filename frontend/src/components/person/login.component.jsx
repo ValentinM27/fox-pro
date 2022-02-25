@@ -85,6 +85,13 @@ const Login = () => {
         })
     }
 
+    /**
+     * Permet d'envoyer la demande de réinitialisation du mots de passe
+     */
+    const handleForgotPassword = () => {
+
+    }
+
     return (
         <div className="container">
             <h1 className="col-md-12 text-center">Connexion à votre compte Fox'Pro</h1>
@@ -137,6 +144,7 @@ const Login = () => {
                 <div className="col-md-12 text-center">
                     <div className="form-group">
                         <button type="submit" className="btn btn-primary">Me connecter</button>
+                        <button onCLicking={() => handleForgotPassword()}className="btn btn-dark orange space">Mot de passe oublié</button>
                     </div>      
                 </div>
 

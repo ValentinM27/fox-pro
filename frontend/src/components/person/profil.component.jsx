@@ -103,7 +103,7 @@ export default class Profil extends Component {
                 <div>
                     <ModifyProfil firstname={this.state.firstname} lastname={this.state.lastname} email={this.state.email}/>
                     
-                    <div className="text-center">
+                    <div className="text-center margin-bottom">
                         <button onClick={() => {this.setState({modification : false})}} className="btn1 btn-dark orange margin-top">Annuler</button> 
                     </div>
                 </div> 

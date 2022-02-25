@@ -32,7 +32,7 @@ const Home = () => {
                 : 
                 (
                   <div>
-                    <button onClick={handleOnLogin} className="btn btn-primary margin-top orange">
+                    <button onClick={handleOnLogin} className="btn btn-dark margin-top orange">
                       Me connecter
                     </button>
                   </div>
