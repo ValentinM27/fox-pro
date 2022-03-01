@@ -15,8 +15,11 @@ Front-End :
 Back-End :
 * Node.JS / Express.JS
 
+Desktop : 
+* Electron.JS
+
 Base de données :
-* MySQL (Script sur demande)
+* MySQL 
 
 # Structure de projet 
 Front-End :
@@ -30,3 +33,6 @@ Back-End :
 * /routes : Contient toutes les routes de l'applications 
 * /middlewares : Contient les middlewares tel que l'authentification des token 
 * /controllers : Contient les controllers de l'app regroupés par type d'objet 
+
+Desktop : 
+* main.js : Fichier de chargement de la webview
